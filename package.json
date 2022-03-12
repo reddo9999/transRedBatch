@@ -1,0 +1,19 @@
+{
+    "name": "transredbatch",
+    "title": "Red Batch",
+    "description": "Red's alternative Batch Translator. Meant to be faster on bigger projects.",
+    "main": "transredbatch.js",
+    "version": "0.01",
+    "icon": "icon.png",
+    "author": {
+        "name": "Reddo"
+    },
+    "autoload": true,
+    "devDependencies": {
+        "@types/jquery": "^3.5.13",
+        "typescript": "^4.5.5"
+    },
+    "dependencies": {
+        "@types/node": "^17.0.16"
+    }
+}
