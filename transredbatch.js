@@ -54,13 +54,42 @@ class RedBatchTranslatorWindow {
         innerWindow.appendChild(contents);
         contents.appendChild($("<h2 style='margin: 0px;'>Select Translator</h2>")[0]);
         contents.appendChild($("<hr></hr>")[0]);
-        contents.appendChild($(`<select><option value="redsugoi">Red Sugoi Translator</option><option value="redgoogles">Red Google Translator</option></select>`)[0]);
+        this.transSelect = this.getTranslatorsSelect();
+        contents.appendChild(this.transSelect);
     }
     open() {
         document.body.appendChild(this.container);
+        let updateTransSelect = this.getTranslatorsSelect();
+        this.transSelect.parentElement.replaceChild(this.transSelect, updateTransSelect);
+        this.transSelect = updateTransSelect;
     }
     close() {
         document.body.removeChild(this.container);
+    }
+    getTranslatorsSelect() {
+        let transSelect = document.createElement("select");
+        let transOptions = [];
+        for (let i = 0; i < trans.translator.length; i++) {
+            let id = trans.translator[i];
+            let name = trans[id].name;
+            let option = document.createElement("option");
+            option.value = id;
+            option.appendChild(document.createTextNode(name));
+            transOptions.push(option);
+        }
+        transOptions.sort((a, b) => {
+            let na = a.childNodes[0].nodeValue;
+            let nb = b.childNodes[0].nodeValue;
+            if (na < nb)
+                return 1;
+            else if (na > nb)
+                return -1;
+            return 0;
+        });
+        transOptions.forEach((option) => {
+            transSelect.appendChild(option);
+        });
+        return transSelect;
     }
 }
 /* <div id="dialogTranslateAll" data-tranatrr="title" class="dialog dialogTranslateAll ui-dialog-content ui-widget-content initialized" style="width: auto; min-height: 0px; max-height: none; height: 285px;">

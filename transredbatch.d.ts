@@ -7,9 +7,11 @@ declare class RedBatchTranslatorButton {
 declare class RedBatchTranslatorWindow {
     private parent;
     private container;
+    private transSelect;
     constructor(parent: RedBatchTranslator);
     open(): void;
     close(): void;
+    getTranslatorsSelect(): HTMLSelectElement;
 }
 declare class RedBatchTranslatorRow {
     private location;
