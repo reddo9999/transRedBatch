@@ -147,7 +147,7 @@ The quote symbols (「 and 」) can be escaped, which would result in the follow
 
     %Aうむむむむ……開かないっ%B
 
-In this case, the placeholders are not part of the actual text. Not sending them to the translator will only improve the tranlation quality (and also decrease translation time). The choice for using Cut Corners is simple: are the placeholders on corners part of the sentence or not? If they're not, it's best to cut corners. If they are part of the sentence, it's best to keep them in. Either way, this will depend on what you're escaping in the first place. If you are not escaping the quotes and you're positive all your placeholders will be in the middle, you can just leave if OFF. It's also best to turn it off for messages which will have placeholders at the start (common in States/Skills/Battle Messages), as these are often actors/subjects.
+In this case, the placeholders are not part of the actual text. Not sending them to the translator will only improve the translation quality (and also decrease translation time). The choice for using Cut Corners is simple: are the placeholders on corners part of the sentence or not? If they're not, it's best to cut corners. If they are part of the sentence, it's best to keep them in. Either way, this will depend on what you're escaping in the first place. If you are not escaping the quotes and you're positive all your placeholders will be in the middle, you can just leave if OFF. It's also best to turn it off for messages which will have placeholders at the start (common in States/Skills/Battle Messages), as these are often actors/subjects.
 
 # How to fix text out of bounds?
 
@@ -156,6 +156,8 @@ Specially when using Sugoi Translator, the text tends to go out of bounds quite 
 ![Menus are hard to find](/guide/MenuWrap.png)
 
 Upon opening the Automatic Wrapper, you'll be greeted by a menu asking you to say which *contexts* need wrapping. This is important, as not all types of messages need to be wrapped, or even should be wrapped.
+
+![Setup is important](/guide/WrapMenu.png)
 
 "Dialogue", "Message", "Description" are common ways RPG Maker shows texts in it's window. We can wrap these to around 52 characters - depending on the game and the font choice/plugins, it might have less or more space. Remember - if a message has a picture, it will have less space than normal. In these cases it'd be necessary to wrap "Message hasPicture" separatedly from the other "Message".
 
