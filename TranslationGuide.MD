@@ -104,7 +104,9 @@ How to protect these calls will be taught in the Custom Escaper / Placeholder se
 
 The Custom Escaper is T++'s solution for when you want to translate a text even though it has untranslatable elements. It allows you to strip the message from these elements and then put them back in after translating.
 
-Each line refers to a Regular Expression, which will match text against itself, and on positive matches, the text will be replaced by a placeholder before translation, and recovered to the original value after translation. The following are some interesting Placeholders, with comments added:
+Each line refers to a Regular Expression, which will match text against itself, and on positive matches, the text will be replaced by a placeholder before translation, and recovered to the original value after translation.
+
+The following are some interesting Placeholders, with comments added:
 
     /(<SGカテゴリ:.*>)|(<SG[^:]+>)|(<SG.+?:)|(>)|(<SAC.+?:)/g, // Covers common notes for SG Quests and SAC information.
     /^(?:DW_(?!SET))|(?:D_TEXT)|(?:addLog)|(?:DW_) /g, // Covers Plugin Command for DW_ Messages and D_TEXT messages, addLog messages, etc,
