@@ -1,6 +1,5 @@
 # Red's guide for people who can't translate good
 ###### and who wanna learn to do other stuff good too
-***
 This guide will cover the fundamentals for how most games handle their texts. In particular, we will cover:
 + What are contexts and what do they mean?
     + Are all contexts translatable?
@@ -82,7 +81,7 @@ And in some cases you might not want to translate at all, as is the case for the
 
 A lot of games will call variable values throughout messages, and some symbols have special meaning for the game interpreter. For instance:
 
-![Variables are used extensively in most games](/guide/PluginCommand.png)
+![Variables are used extensively in most games](/guide/Variables.png)
 
     \n[1]は\v[40]のダメージを受けた！
 
