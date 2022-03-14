@@ -10,7 +10,6 @@
         states name
 
 2. Check whether "Note" is translatable or not. If it isn't, mark them red or delete rows. You can find them through the Search tool (Control + F), selecting "Context" in the dropdown.
-![Find](/guide/NoteFind.png)
 
 3. Do the same for PluginCommand and Control Variables on MV/MZ. Remember! Old Parser on VX Ace and older has "InlineScript" context, new Parser uses "script/"! You only want to translate these if the game is clearly using them for text, otherwise, leave them be.
 
