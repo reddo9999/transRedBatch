@@ -1,4 +1,4 @@
-## Red's guide for people who can't translate good
+# Red's guide for people who can't translate good
 ###### and who wanna learn to do other stuff good too
 ***
 This guide will cover the fundamentals for how most games handle their texts. In particular, we will cover:
