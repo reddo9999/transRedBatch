@@ -1,11 +1,13 @@
 # Red's cheat sheet for batch translation:
 1. Remove all untranslatable contexts. The following contexts **never** need to be translated, remember to tick "Match all words!":
-    animations
-    events name
-    commonevents name
-    tilesets name
-    state name
-    states name
+
+        animations
+        events name
+        commonevents name
+        tilesets name
+        state name
+        states name
+
 2. Check whether "Note" is translatable or not. If it isn't, mark them red or delete rows. You can find them through the Search tool (Control + F), selecting "Context" in the dropdown.
 ![Find](/guide/NoteFind.png)
 3. Do the same for PluginCommand and Control Variables. You only want to translate these if the game is clearly using them for text, otherwise, leave them be.
