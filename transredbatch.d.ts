@@ -39,3 +39,20 @@ declare class RedBatchTranslator {
     }): void;
 }
 declare var thisAddon: any;
+declare let div: HTMLDivElement;
+declare let buttonPrepare: HTMLAnchorElement;
+declare let buttonBatch: HTMLAnchorElement;
+declare const removableContexts: string[];
+declare const translatableNoteRegExp: RegExp;
+declare const translatablePluginRegExp: RegExp;
+declare const translatablePluginJSRegExp: RegExp;
+declare const translatableControlVariable: RegExp;
+declare class RedBatchCheatSheet {
+    private panel;
+    private button;
+    constructor();
+    checkProject(): void;
+    checkCollection(collection: any, regExp: RegExp): void;
+    checkFile(file: string, regExp: RegExp): void;
+    checkRow(file: string, index: number, regExp: RegExp): void;
+}
