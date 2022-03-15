@@ -75,8 +75,9 @@ class RedBatchCheatSheet {
         // Red all js/plugins/
         for (let file in trans.project.files) {
             // VX Ace scripts (except vocab!)
-            if (    file.indexOf("js/plugins/") != -1 || 
-                    (file.indexOf("Scripts/") != -1 && file.indexOf("Vocab") == -1)
+            if (    file.indexOf("js/plugins/") != -1 || // MV/MZ plugins
+                    (file.indexOf("Scripts/") != -1 && file.indexOf("Vocab") == -1) || // VX Ace scripts, except Vocab
+                    file.indexOf("Game.ini") != -1 // VX Ace .ini... dangerous!
                 ) {
                 let fileData = trans.project.files[file];
                 for (let index = 0; index < fileData.data.length; index++) {
