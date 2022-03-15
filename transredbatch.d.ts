@@ -38,10 +38,13 @@ declare class RedBatchTranslator {
         saveOnEachBatch: boolean;
     }): void;
 }
+declare const wordWrapNoPicture = "64";
+declare const wordWrapPicture = "50";
 declare var thisAddon: any;
 declare let div: HTMLDivElement;
 declare let buttonPrepare: HTMLAnchorElement;
 declare let buttonBatch: HTMLAnchorElement;
+declare let buttonWrap: HTMLAnchorElement;
 declare const removableContexts: string[];
 declare const translatableNoteRegExp: RegExp;
 declare const translatablePluginRegExp: RegExp;

@@ -1,9 +1,9 @@
 {
     "name": "transredbatch",
     "title": "Red Batch",
-    "description": "Red's alternative Batch Translator. Meant to be faster on bigger projects.",
+    "description": "Red's alternative Batch Translator. Meant to be faster on bigger projects. Also able to prepare projects for batch translation. Git: https://github.com/reddo9999/transRedBatch",
     "main": "transredbatch.js",
-    "version": "0.03",
+    "version": "0.04",
     "icon": "icon.png",
     "author": {
         "name": "Reddo"

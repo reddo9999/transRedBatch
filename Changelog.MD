@@ -1,3 +1,9 @@
+# Version 0.04
++ Added basic VX Ace support for the Prepare Project. Assumes New Parser for now.
+    + A little support for the old parser but no promises!
++ Added button for Word Wrap. Should work relatively well on RPG Maker games of all kinds. No promises!
+    + For MV/MZ, it's still better to just leave them as-is and use a word-wrap plugin instead... if the game supports it!
+
 # Version 0.03
 + Capable of "Preparing Project", which works through rows following the guide automatically.
     + Prepare Project, for now, only works on MV/MZ games. Games originally made with English Characters require an additional manual look at Plugins.js, if translating Scripts.

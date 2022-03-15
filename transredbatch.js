@@ -307,6 +307,8 @@ class RedBatchTranslator {
     }
 }
 /// <reference path="RedBatchTranslator.ts" />
+const wordWrapNoPicture = "64";
+const wordWrapPicture = "50";
 var thisAddon = this;
 $(document).ready(() => {
     trans.RedBatchTranslatorInstance = new RedBatchTranslator();
@@ -335,6 +337,34 @@ buttonBatch.addEventListener("click", (ev) => {
 });
 buttonBatch.appendChild(document.createTextNode("Batch Translate"));
 div.appendChild(buttonBatch);
+div.appendChild(document.createElement("br"));
+let buttonWrap = document.createElement("a");
+buttonWrap.href = "#";
+buttonWrap.addEventListener("click", (ev) => {
+    ev.preventDefault();
+    // Word Wrap common messages
+    trans.wordWrapFiles(trans.getAllFiles(), // Files
+    1, // Source
+    2, // Destination
+    {
+        maxLength: wordWrapNoPicture,
+        context: [
+            "dialogue", "message1", "message2", "message3", "description", "message", "noPicture"
+        ]
+    });
+    // Word Wrap picture
+    trans.wordWrapFiles(trans.getAllFiles(), // Files
+    1, // Source
+    2, // Destination
+    {
+        maxLength: wordWrapPicture,
+        context: [
+            "hasPicture"
+        ]
+    });
+});
+buttonWrap.appendChild(document.createTextNode("Batch Word Wrap (RPG Maker)"));
+div.appendChild(buttonWrap);
 document.body.appendChild(div);
 const removableContexts = [
     "animations",
@@ -378,9 +408,14 @@ class RedBatchCheatSheet {
         this.checkCollection(trans.travelContext(trans.getAllFiles(), "plugin"), translatablePluginRegExp);
         // Check plugins.js file
         this.checkFile("js/plugins.js", translatablePluginJSRegExp);
+        // VX Ace inline scripts
+        this.checkCollection(trans.travelContext(trans.getAllFiles(), "script/"), translatablePluginJSRegExp);
+        this.checkCollection(trans.travelContext(trans.getAllFiles(), "inlinescript"), translatablePluginJSRegExp);
         // Red all js/plugins/
         for (let file in trans.project.files) {
-            if (file.indexOf("js/plugins/") != -1) {
+            // VX Ace scripts (except vocab!)
+            if (file.indexOf("js/plugins/") != -1 ||
+                (file.indexOf("Scripts/") != -1 && file.indexOf("Vocab") == -1)) {
                 let fileData = trans.project.files[file];
                 for (let index = 0; index < fileData.data.length; index++) {
                     trans.project.files[file].tags[index] = ["red"];
