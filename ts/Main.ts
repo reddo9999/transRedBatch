@@ -1,6 +1,6 @@
 /// <reference path="RedBatchTranslator.ts" />
 
-const wordWrapNoPicture = "64";
+const wordWrapNoPicture = "60";
 const wordWrapPicture = "50";
 
 var thisAddon = <any> this;
@@ -51,7 +51,8 @@ buttonWrap.addEventListener("click", (ev) => {
         {
             maxLength: wordWrapNoPicture,
             context: [
-                "dialogue", "message1", "message2", "message3", "description", "message", "noPicture"
+                "dialogue", "message1", "message2", "message3", 
+                "description", "message", "noPicture", "scrollingMessage"
             ]
         }
     );
