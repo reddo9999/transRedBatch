@@ -61,9 +61,23 @@ class RedBatchCheatSheet {
         // Check plugins.js file
         this.checkFile("js/plugins.js", translatablePluginJSRegExp);
 
+        // VX Ace inline scripts
+        this.checkCollection(
+            trans.travelContext(trans.getAllFiles(), "script/"),
+            translatablePluginJSRegExp
+        );
+        this.checkCollection(
+            trans.travelContext(trans.getAllFiles(), "inlinescript"),
+            translatablePluginJSRegExp
+        );
+
+
         // Red all js/plugins/
         for (let file in trans.project.files) {
-            if (file.indexOf("js/plugins/") != -1) {
+            // VX Ace scripts (except vocab!)
+            if (    file.indexOf("js/plugins/") != -1 || 
+                    (file.indexOf("Scripts/") != -1 && file.indexOf("Vocab") == -1)
+                ) {
                 let fileData = trans.project.files[file];
                 for (let index = 0; index < fileData.data.length; index++) {
                     trans.project.files[file].tags[index] = ["red"];
