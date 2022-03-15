@@ -1,5 +1,8 @@
 /// <reference path="RedBatchTranslator.ts" />
 
+const wordWrapNoPicture = "64";
+const wordWrapPicture = "50";
+
 var thisAddon = <any> this;
 
 $(document).ready(() => {
@@ -33,5 +36,40 @@ buttonBatch.addEventListener("click", (ev) => {
 });
 buttonBatch.appendChild(document.createTextNode("Batch Translate"));
 div.appendChild(buttonBatch);
+
+div.appendChild(document.createElement("br"));
+
+let buttonWrap = document.createElement("a");
+buttonWrap.href = "#";
+buttonWrap.addEventListener("click", (ev) => {
+    ev.preventDefault();
+    // Word Wrap common messages
+    trans.wordWrapFiles(
+        trans.getAllFiles(), // Files
+        1, // Source
+        2, // Destination
+        {
+            maxLength: wordWrapNoPicture,
+            context: [
+                "dialogue", "message1", "message2", "message3", "description", "message", "noPicture"
+            ]
+        }
+    );
+
+    // Word Wrap picture
+    trans.wordWrapFiles(
+        trans.getAllFiles(), // Files
+        1, // Source
+        2, // Destination
+        {
+            maxLength: wordWrapPicture,
+            context: [
+                "hasPicture"
+            ]
+        }
+    );
+});
+buttonWrap.appendChild(document.createTextNode("Batch Word Wrap (RPG Maker)"));
+div.appendChild(buttonWrap);
 
 document.body.appendChild(div);
