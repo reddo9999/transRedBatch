@@ -307,7 +307,7 @@ class RedBatchTranslator {
     }
 }
 /// <reference path="RedBatchTranslator.ts" />
-const wordWrapNoPicture = "64";
+const wordWrapNoPicture = "60";
 const wordWrapPicture = "50";
 var thisAddon = this;
 $(document).ready(() => {
@@ -349,7 +349,8 @@ buttonWrap.addEventListener("click", (ev) => {
     {
         maxLength: wordWrapNoPicture,
         context: [
-            "dialogue", "message1", "message2", "message3", "description", "message", "noPicture"
+            "dialogue", "message1", "message2", "message3",
+            "description", "message", "noPicture", "scrollingMessage"
         ]
     });
     // Word Wrap picture
@@ -414,8 +415,10 @@ class RedBatchCheatSheet {
         // Red all js/plugins/
         for (let file in trans.project.files) {
             // VX Ace scripts (except vocab!)
-            if (file.indexOf("js/plugins/") != -1 ||
-                (file.indexOf("Scripts/") != -1 && file.indexOf("Vocab") == -1)) {
+            if (file.indexOf("js/plugins/") != -1 || // MV/MZ plugins
+                (file.indexOf("Scripts/") != -1 && file.indexOf("Vocab") == -1) || // VX Ace scripts, except Vocab
+                file.indexOf("Game.ini") != -1 // VX Ace .ini... dangerous!
+            ) {
                 let fileData = trans.project.files[file];
                 for (let index = 0; index < fileData.data.length; index++) {
                     trans.project.files[file].tags[index] = ["red"];

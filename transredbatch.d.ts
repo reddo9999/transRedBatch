@@ -38,7 +38,7 @@ declare class RedBatchTranslator {
         saveOnEachBatch: boolean;
     }): void;
 }
-declare const wordWrapNoPicture = "64";
+declare const wordWrapNoPicture = "60";
 declare const wordWrapPicture = "50";
 declare var thisAddon: any;
 declare let div: HTMLDivElement;

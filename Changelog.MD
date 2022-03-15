@@ -1,3 +1,7 @@
+# Version 0.05
++ Better word wrap defaults, might still be too big if too many big letters are used. Only japanese gets monospace, I'm afraid.
++ Now marks Game.ini as Red in VX Ace games.
+
 # Version 0.04
 + Added basic VX Ace support for the Prepare Project. Assumes New Parser for now.
     + A little support for the old parser but no promises!
