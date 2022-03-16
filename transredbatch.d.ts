@@ -1,8 +1,4 @@
 declare class RedBatchTranslatorButton {
-    private panel;
-    private button;
-    private parent;
-    constructor(parent: RedBatchTranslator);
 }
 declare class RedBatchTranslatorWindow {
     private parent;
@@ -22,7 +18,6 @@ declare class RedBatchTranslatorRow {
     getTags(): any;
 }
 declare class RedBatchTranslator {
-    private button;
     private window;
     constructor();
     open(): void;
@@ -38,22 +33,26 @@ declare class RedBatchTranslator {
         saveOnEachBatch: boolean;
     }): void;
 }
+declare function t(text: string): string;
+declare class RedButtonManagerButton {
+    name: string;
+    icon: string;
+    title: string;
+    action: () => void | Promise<void>;
+    private element;
+    constructor(name: string, icon: string, title: string, action: () => void | Promise<void>);
+    setIcon(icon: string): void;
+    getButton(): HTMLButtonElement;
+}
 declare const wordWrapNoPicture = "60";
 declare const wordWrapPicture = "50";
 declare var thisAddon: any;
-declare let div: HTMLDivElement;
-declare let buttonPrepare: HTMLAnchorElement;
-declare let buttonBatch: HTMLAnchorElement;
-declare let buttonWrap: HTMLAnchorElement;
 declare const removableContexts: string[];
 declare const translatableNoteRegExp: RegExp;
 declare const translatablePluginRegExp: RegExp;
 declare const translatablePluginJSRegExp: RegExp;
 declare const translatableControlVariable: RegExp;
 declare class RedBatchCheatSheet {
-    private panel;
-    private button;
-    constructor();
     checkProject(): void;
     checkCollection(collection: any, regExp: RegExp): void;
     checkFile(file: string, regExp: RegExp): void;

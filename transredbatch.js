@@ -1,25 +1,5 @@
 "use strict";
 class RedBatchTranslatorButton {
-    constructor(parent) {
-        this.panel = document.getElementsByClassName("toolbar-content toolbar3")[0];
-        this.parent = parent;
-        // <button class="menu-button batch-translate" data-tranattr="title" title="Batch translation">
-        //  <img src="img/translate_all.png" alt="translate">
-        // </button>
-        this.button = document.createElement("button");
-        this.button.classList.add("menu-button", "batch-translate");
-        this.button.title = "Red Batch Translation";
-        this.button.style.filter = "hue-rotate(260deg)"; // Green to red
-        this.button.title = "Red Batch Translation";
-        let img = document.createElement("img");
-        img.src = "img/translate_all.png";
-        img.alt = "red batch translation";
-        this.button.appendChild(img);
-        this.panel.appendChild(this.button);
-        this.button.addEventListener("click", () => {
-            this.parent.open();
-        });
-    }
 }
 class RedBatchTranslatorWindow {
     constructor(parent) {
@@ -126,7 +106,6 @@ class RedBatchTranslatorRow {
 /// <reference path="RedBatchTranslator/RedBatchTranslatorRow.ts" />
 class RedBatchTranslator {
     constructor() {
-        this.button = new RedBatchTranslatorButton(this);
         this.window = new RedBatchTranslatorWindow(this);
     }
     open() {
@@ -306,67 +285,85 @@ class RedBatchTranslator {
         translate();
     }
 }
+class RedButtonManagerButton {
+    constructor(name, icon, title, action) {
+        this.name = name;
+        this.icon = icon;
+        this.title = title;
+        this.action = action;
+    }
+    setIcon(icon) {
+        this.icon = icon;
+        if (this.element != undefined) {
+            this.element.children[0].className = icon;
+        }
+    }
+    getButton() {
+        if (this.element != undefined) {
+            return this.element;
+        }
+        else {
+            let button = document.createElement("button");
+            button.classList.add("menu-button");
+            button.dataset.tranattr = "title";
+            button.title = t(this.title);
+            let icon = document.createElement("i");
+            icon.classList.add(this.icon);
+            button.appendChild(icon);
+            icon.style.color = "#E00";
+            button.addEventListener("click", this.action);
+            this.element = button;
+            return button;
+        }
+    }
+}
 /// <reference path="RedBatchTranslator.ts" />
+/// <reference path="RedButtonManager.ts" />
 const wordWrapNoPicture = "60";
 const wordWrapPicture = "50";
 var thisAddon = this;
 $(document).ready(() => {
     trans.RedBatchTranslatorInstance = new RedBatchTranslator();
-});
-let div = document.createElement("div");
-div.style.position = "fixed";
-div.style.bottom = "150px";
-div.style.right = "4px";
-div.style.backgroundColor = "white";
-div.style.border = "solid 1px black";
-div.style.padding = "5px";
-let buttonPrepare = document.createElement("a");
-buttonPrepare.href = "#";
-buttonPrepare.addEventListener("click", (ev) => {
-    ev.preventDefault();
-    trans.batchCheckSheet.checkProject();
-});
-buttonPrepare.appendChild(document.createTextNode("Prepare Project (RPG Maker)"));
-div.appendChild(buttonPrepare);
-div.appendChild(document.createElement("br"));
-let buttonBatch = document.createElement("a");
-buttonBatch.href = "#";
-buttonBatch.addEventListener("click", (ev) => {
-    ev.preventDefault();
-    trans.RedBatchTranslatorInstance.open();
-});
-buttonBatch.appendChild(document.createTextNode("Batch Translate"));
-div.appendChild(buttonBatch);
-div.appendChild(document.createElement("br"));
-let buttonWrap = document.createElement("a");
-buttonWrap.href = "#";
-buttonWrap.addEventListener("click", (ev) => {
-    ev.preventDefault();
-    // Word Wrap common messages
-    trans.wordWrapFiles(trans.getAllFiles(), // Files
-    1, // Source
-    2, // Destination
-    {
-        maxLength: wordWrapNoPicture,
-        context: [
-            "dialogue", "message1", "message2", "message3",
-            "description", "message", "noPicture", "scrollingMessage"
-        ]
+    let buttonContainer = document.body.getElementsByClassName("toolbar-content toolbar10 redToolbar")[0];
+    if (buttonContainer == undefined) {
+        let toolbarContainer = document.body.getElementsByClassName("toolbar mainToolbar")[0];
+        buttonContainer = document.createElement("div");
+        buttonContainer.className = "toolbar-content toolbar10 redToolbar";
+        toolbarContainer.appendChild(buttonContainer);
+    }
+    let prepareButton = new RedButtonManagerButton("prepareProject", "icon-tasks", "Prepare Project for Batch Translation", () => {
+        trans.batchCheckSheet.checkProject();
     });
-    // Word Wrap picture
-    trans.wordWrapFiles(trans.getAllFiles(), // Files
-    1, // Source
-    2, // Destination
-    {
-        maxLength: wordWrapPicture,
-        context: [
-            "hasPicture"
-        ]
+    let translateButton = new RedButtonManagerButton("batchTranslate", "icon-language-1", "Batch Translate", () => {
+        trans.RedBatchTranslatorInstance.open();
     });
+    let wrapButton = new RedButtonManagerButton("wrapProject", "icon-commenting", "Wrap Project", () => {
+        // Word Wrap common messages
+        trans.wordWrapFiles(trans.getAllFiles(), // Files
+        1, // Source
+        2, // Destination
+        {
+            maxLength: wordWrapNoPicture,
+            context: [
+                "dialogue", "message1", "message2", "message3",
+                "description", "message", "noPicture", "scrollingMessage"
+            ]
+        });
+        // Word Wrap picture
+        trans.wordWrapFiles(trans.getAllFiles(), // Files
+        1, // Source
+        2, // Destination
+        {
+            maxLength: wordWrapPicture,
+            context: [
+                "hasPicture"
+            ]
+        });
+    });
+    buttonContainer.appendChild(prepareButton.getButton());
+    buttonContainer.appendChild(translateButton.getButton());
+    buttonContainer.appendChild(wrapButton.getButton());
 });
-buttonWrap.appendChild(document.createTextNode("Batch Word Wrap (RPG Maker)"));
-div.appendChild(buttonWrap);
-document.body.appendChild(div);
 const removableContexts = [
     "animations",
     "events name",
@@ -380,22 +377,6 @@ const translatablePluginRegExp = /^(?:DW_(?!SET))|(?:D_TEXT )|(?:addLog )|(?:DW_
 const translatablePluginJSRegExp = /[^\x21-\x7E\* ]+/g;
 const translatableControlVariable = /.*/g;
 class RedBatchCheatSheet {
-    constructor() {
-        this.panel = document.getElementsByClassName("toolbar-content toolbar3")[0];
-        this.button = document.createElement("button");
-        this.button.classList.add("menu-button", "batch-translate");
-        this.button.title = "Red Batch Checkup";
-        this.button.style.filter = "hue-rotate(100deg)"; // Green to red
-        this.button.title = "Red Batch Checkup";
-        let img = document.createElement("img");
-        img.src = "img/translate_all.png";
-        img.alt = "red batch translation";
-        this.button.appendChild(img);
-        this.panel.appendChild(this.button);
-        this.button.addEventListener("click", () => {
-            this.checkProject();
-        });
-    }
     checkProject() {
         // Remove untranslatable rows
         trans.removeRowByContext(undefined, removableContexts, {

@@ -1,3 +1,6 @@
+# Version 0.06
++ Switches the awful links for toolbar buttons
+
 # Version 0.05
 + Better word wrap defaults, might still be too big if too many big letters are used. Only japanese gets monospace, I'm afraid.
 + Now marks Game.ini as Red in VX Ace games.
