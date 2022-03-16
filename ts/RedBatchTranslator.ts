@@ -2,11 +2,9 @@
 /// <reference path="RedBatchTranslator/RedBatchTranslatorWindow.ts" />
 /// <reference path="RedBatchTranslator/RedBatchTranslatorRow.ts" />
 class RedBatchTranslator {
-    private button : RedBatchTranslatorButton;
     private window : RedBatchTranslatorWindow;
 
     constructor () {
-        this.button = new RedBatchTranslatorButton(this);
         this.window = new RedBatchTranslatorWindow(this);
     }
 

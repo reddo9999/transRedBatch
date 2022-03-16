@@ -13,27 +13,6 @@ const translatablePluginJSRegExp = /[^\x21-\x7E\* ]+/g;
 const translatableControlVariable = /.*/g;
 
 class RedBatchCheatSheet {
-    private panel = <HTMLElement> document.getElementsByClassName("toolbar-content toolbar3")[0];
-    private button : HTMLElement;
-
-    constructor () {
-        this.button = document.createElement("button");
-        this.button.classList.add("menu-button", "batch-translate");
-        this.button.title = "Red Batch Checkup";
-        this.button.style.filter = "hue-rotate(100deg)"; // Green to red
-        this.button.title = "Red Batch Checkup";
-
-        let img = document.createElement("img");
-        img.src = "img/translate_all.png";
-        img.alt = "red batch translation";
-        this.button.appendChild(img);
-        this.panel.appendChild(this.button);
-
-        this.button.addEventListener("click", () => {
-            this.checkProject();
-        });
-    }
-
     public checkProject () {
         // Remove untranslatable rows
         trans.removeRowByContext(undefined, removableContexts, {
