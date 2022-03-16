@@ -101,11 +101,27 @@ class RedBatchTranslatorRow {
         return tags;
     }
 }
+class RedPerformance {
+    constructor() {
+        this.perfStart = Date.now();
+        this.perfEnd = 0;
+    }
+    end() {
+        this.perfEnd = Date.now();
+    }
+    getSeconds() {
+        let timeTaken = this.perfEnd - this.perfStart;
+        return (Math.round(timeTaken / 100) / 10);
+    }
+}
 /// <reference path="RedBatchTranslator/RedBatchTranslatorButton.ts" />
 /// <reference path="RedBatchTranslator/RedBatchTranslatorWindow.ts" />
 /// <reference path="RedBatchTranslator/RedBatchTranslatorRow.ts" />
+/// <reference path="RedPerformance.ts" />
 class RedBatchTranslator {
     constructor() {
+        this.saving = false;
+        this.saveAgain = false;
         this.window = new RedBatchTranslatorWindow(this);
     }
     open() {
@@ -130,8 +146,34 @@ class RedBatchTranslator {
     close() {
         this.window.close();
     }
+    refresh() {
+        trans.refreshGrid();
+        trans.evalTranslationProgress();
+    }
     translateProject(options) {
-        ui.showLoading();
+        let aborted = false;
+        /*
+        options.buttons = [{
+            text: "text to display",
+            onClick : function
+        }]
+        */
+        ui.showLoading({ buttons: [
+                {
+                    text: "Abort",
+                    onClick: () => {
+                        if (confirm(t("Are you sure you want to abort?"))) {
+                            aborted = true; // :/
+                            trans.abortTranslation();
+                        }
+                    }
+                },
+                { text: "Pause",
+                    onClick: () => {
+                        alert(t("Process paused!\nPress OK to continue!"));
+                    }
+                },
+            ] });
         ui.loadingProgress(0, "Starting up...");
         ui.log(`[RedBatchTranslator] Beginning translation at ${new Date()}`);
         let consoleWindow = $("#loadingOverlay .console")[0];
@@ -237,10 +279,7 @@ class RedBatchTranslator {
                         ui.log(`[RedBatchTranslator] Took ${Math.round(10 * (batchEnd - batchStart) / 1000) / 10} seconds.`);
                         ui.loadingProgress(100, "Finished!");
                         ui.showCloseButton();
-                        setTimeout(() => {
-                            trans.refreshGrid();
-                            trans.evalTranslationProgress();
-                        }, 500);
+                        this.refresh();
                     }
                     else {
                         let batchDelay = translatorEngine.batchDelay;
@@ -253,12 +292,20 @@ class RedBatchTranslator {
                         }
                     }
                 };
-                if (options.saveOnEachBatch) {
-                    ui.log(`[RedBatchTranslator] Saving project...`);
-                    trans.save().finally(proceed);
+                if (aborted) {
+                    ui.log(`[RedBatchTranslator] Translation aborted.`);
+                    ui.showCloseButton();
+                    this.refresh();
                 }
                 else {
-                    proceed();
+                    if (options.saveOnEachBatch) {
+                        ui.log(`[RedBatchTranslator] Saving project...`);
+                        this.saveProject();
+                        proceed();
+                    }
+                    else {
+                        proceed();
+                    }
                 }
             };
             if (batches[myBatch] == undefined) {
@@ -283,6 +330,21 @@ class RedBatchTranslator {
             }
         };
         translate();
+    }
+    saveProject() {
+        if (this.saving) {
+            this.saveAgain = true;
+        }
+        else {
+            this.saving = true;
+            trans.save().finally(() => {
+                this.saving = false;
+                if (this.saveAgain) {
+                    this.saveAgain = false;
+                    this.saveProject();
+                }
+            });
+        }
     }
 }
 class RedButtonManagerButton {

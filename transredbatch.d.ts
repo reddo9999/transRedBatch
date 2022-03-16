@@ -17,11 +17,20 @@ declare class RedBatchTranslatorRow {
     setValue(text: string, destination: number): void;
     getTags(): any;
 }
+declare class RedPerformance {
+    private perfStart;
+    private perfEnd;
+    end(): void;
+    getSeconds(): number;
+}
 declare class RedBatchTranslator {
     private window;
+    private saving;
+    private saveAgain;
     constructor();
     open(): void;
     close(): void;
+    refresh(): void;
     translateProject(options: {
         translator: string;
         destination: number;
@@ -32,6 +41,7 @@ declare class RedBatchTranslator {
         strict: boolean;
         saveOnEachBatch: boolean;
     }): void;
+    saveProject(): void;
 }
 declare function t(text: string): string;
 declare class RedButtonManagerButton {

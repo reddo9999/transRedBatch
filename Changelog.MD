@@ -1,3 +1,7 @@
+# Version 0.07
++ Saving the project is now done asynchronously. This is a massive speed gain on small projects, but a pleasant speed gain on projects of any size.
+    + This also means that there is less time wasted saving the project between batches, so uptime is higher when the bottleneck is the translation process itself.
+
 # Version 0.06
 + Switches the awful links for toolbar buttons
 
