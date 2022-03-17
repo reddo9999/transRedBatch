@@ -5,8 +5,13 @@ class RedBatchTranslatorRow {
         this.location = [file, index];
     }
     
-    public getValue () {
-        return trans.project.files[this.location[0]].data[this.location[1]][0];
+    public getValue (source : number) {
+        return trans.project.files[this.location[0]].data[this.location[1]][source];
+    }
+
+    public isEmpty (source : number) {
+        let value = this.getValue(source);
+        return value == undefined || value == null || value == "";
     }
 
     public isTranslated () {
