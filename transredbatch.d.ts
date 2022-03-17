@@ -2,17 +2,29 @@ declare class RedBatchTranslatorButton {
 }
 declare class RedBatchTranslatorWindow {
     private parent;
-    private container;
-    private transSelect;
+    private $monster;
+    private monster;
+    private selectTrans;
+    private selectSource;
+    private selectDestination;
+    private checkSave;
+    private checkIgnore;
+    private checkStrict;
+    private blacklistContainer;
+    private whitelistContainer;
     constructor(parent: RedBatchTranslator);
     open(): void;
+    translate(): void;
+    getTags(container: HTMLDivElement): string[];
     close(): void;
-    getTranslatorsSelect(): HTMLSelectElement;
+    updateColumns(): void;
+    updateTranslatorsSelect(): void;
 }
 declare class RedBatchTranslatorRow {
     private location;
     constructor(file: string, index: number);
-    getValue(): any;
+    getValue(source: number): any;
+    isEmpty(source: number): boolean;
     isTranslated(): boolean;
     setValue(text: string, destination: number): void;
     getTags(): any;
@@ -33,6 +45,7 @@ declare class RedBatchTranslator {
     refresh(): void;
     translateProject(options: {
         translator: string;
+        source: number;
         destination: number;
         ignoreTranslated: boolean;
         blacklist: Array<string>;

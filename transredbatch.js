@@ -3,51 +3,98 @@ class RedBatchTranslatorButton {
 }
 class RedBatchTranslatorWindow {
     constructor(parent) {
-        this.container = document.createElement("div");
+        this.$monster = $(`<div class='ui-widget-overlay ui-front' style='opacity: 1; background-color: rgba(170, 170, 170, 0.3); display: flex; justify-content: center; align-items: center;'><div style='background-color: white; width: 600px; height: 500px; font-size: 1.2ex; position: relative;'><div style='background-color: black; color: white; line-height: 30px; padding-left: 10px;'><h1 style='margin:0px'>Red Batch Translation</h1></div><div style='padding: 10px;'><h2 style='margin: 0px;'>Select Translator<select id='redBatchTranslatorSelect' style='margin-left: 2ex'></select></h2><hr><div class='flex col-2'><div class='fieldmember sourceCol'><h2 style='margin:0px'>Source column</h2><label class='columnSelector'><select id='redBatchTranslatorSourceSelect'></select></label><div class='smallInfo'>Which column is the source text to translate for?<br>(default is key column / leftmost column).</div></div><div class='fieldmember'><h2 style='margin:0px'>Target column</h2><label class='targetCol'><select id='redBatchTranslatorDestinationSelect'></select></label><div class='smallInfo'>Which column is the translated text put into.<br>(Can not same with source column)</div></div></div><hr><h2 style='margin: 0px; margin-bottom: 1ex;'>Options</h2><label class='flex fullWidth bottomSpace'><div class='flexMain'><h3 class='label' style='margin: 0px;'>Save on each Batch</h3><div class='info'>If checked, the project is saved after every batch translation.</div></div><div><input checked='true' class='flipSwitch translateOther' id='redBatchTranslatorSave' type='checkbox' value='1'></div></label><label class='flex fullWidth bottomSpace'><div class='flexMain'><h3 class='label' style='margin: 0px;'>Ignore translated</h3><div class='info'>If checked, rows with translations will not be translated.</div></div><div><input checked='true' class='flipSwitch translateOther' id='redBatchTranslatorIgnore' type='checkbox' value='1'></div></label><label class='flex fullWidth bottomSpace'><div class='flexMain'><h3 class='label' style='margin: 0px;'>Strict Whitelist</h3><div class='info'>If checked, rows with no tags can fail the whitelist.</div></div><div><input class='flipSwitch translateOther' id='redBatchTranslatorStrict' type='checkbox' value='1'></div></label><hr><div class='options fieldgroup' id='redBatchTranslatorBlacklist'><div class='fieldmember'><h2 style='margin: 0px;'>Blacklist</h2><div class='info'>Rows that have any of the selected tags will not be translated</div><div class='colorTagSelector'><div class='uiTags uiTagsWrapper rendered' data-mark='unknown'><input checked='true' class='colorTagSelector tagSelector red' name='tagSelector' style='background-color: rgb(255, 0, 0);' title='red' type='checkbox' value='red'><input class='colorTagSelector tagSelector yellow' name='tagSelector' style='background-color: rgb(255, 255, 0);' title='yellow' type='checkbox' value='yellow'><input class='colorTagSelector tagSelector green' name='tagSelector' style='background-color: rgb(0, 128, 0);' title='green' type='checkbox' value='green'><input class='colorTagSelector tagSelector blue' name='tagSelector' style='background-color: rgb(0, 0, 255);' title='blue' type='checkbox' value='blue'><input class='colorTagSelector tagSelector gold' name='tagSelector' style='background-color: rgb(212, 175, 55);' title='gold' type='checkbox' value='gold'><input class='colorTagSelector tagSelector purple' name='tagSelector' style='background-color: rgb(128, 0, 128);' title='purple' type='checkbox' value='purple'><input class='colorTagSelector tagSelector black' name='tagSelector' style='background-color: rgb(0, 0, 0);' title='black' type='checkbox' value='black'><input class='colorTagSelector tagSelector gray' name='tagSelector' style='background-color: rgb(128, 128, 128);' title='gray' type='checkbox' value='gray'><input class='colorTagSelector tagSelector white' name='tagSelector' style='background-color: rgb(255, 255, 255);' title='white' type='checkbox' value='white'><input class='colorTagSelector tagSelector silver' name='tagSelector' style='background-color: rgb(192, 192, 192);' title='silver' type='checkbox' value='silver'><input class='colorTagSelector tagSelector pink' name='tagSelector' style='background-color: rgb(255, 192, 203);' title='pink' type='checkbox' value='pink'><input class='colorTagSelector tagSelector indigo' name='tagSelector' style='background-color: rgb(75, 0, 130);' title='indigo' type='checkbox' value='indigo'><input class='colorTagSelector tagSelector aqua' name='tagSelector' style='background-color: rgb(0, 255, 255);' title='aqua' type='checkbox' value='aqua'><input class='colorTagSelector tagSelector tan' name='tagSelector' style='background-color: rgb(210, 180, 140);' title='tan' type='checkbox' value='tan'><input class='colorTagSelector tagSelector darkred' name='tagSelector' style='background-color: rgb(139, 0, 0);' title='darkred' type='checkbox' value='darkred'></div></div></div></div><hr><div class='options fieldgroup' id='redBatchTranslatorWhitelist'><div class='fieldmember'><h2 style='margin: 0px;'>Whitelist</h2><div class='info'>If any of the following colors is selected, only rows with that color will be translated. This overrides the Blacklist.</div><div class='colorTagSelector'><div class='uiTags uiTagsWrapper rendered' data-mark='unknown'><input class='colorTagSelector tagSelector red' name='tagSelector' style='background-color: rgb(255, 0, 0);' title='red' type='checkbox' value='red'><input class='colorTagSelector tagSelector yellow' name='tagSelector' style='background-color: rgb(255, 255, 0);' title='yellow' type='checkbox' value='yellow'><input class='colorTagSelector tagSelector green' name='tagSelector' style='background-color: rgb(0, 128, 0);' title='green' type='checkbox' value='green'><input class='colorTagSelector tagSelector blue' name='tagSelector' style='background-color: rgb(0, 0, 255);' title='blue' type='checkbox' value='blue'><input class='colorTagSelector tagSelector gold' name='tagSelector' style='background-color: rgb(212, 175, 55);' title='gold' type='checkbox' value='gold'><input class='colorTagSelector tagSelector purple' name='tagSelector' style='background-color: rgb(128, 0, 128);' title='purple' type='checkbox' value='purple'><input class='colorTagSelector tagSelector black' name='tagSelector' style='background-color: rgb(0, 0, 0);' title='black' type='checkbox' value='black'><input class='colorTagSelector tagSelector gray' name='tagSelector' style='background-color: rgb(128, 128, 128);' title='gray' type='checkbox' value='gray'><input class='colorTagSelector tagSelector white' name='tagSelector' style='background-color: rgb(255, 255, 255);' title='white' type='checkbox' value='white'><input class='colorTagSelector tagSelector silver' name='tagSelector' style='background-color: rgb(192, 192, 192);' title='silver' type='checkbox' value='silver'><input class='colorTagSelector tagSelector pink' name='tagSelector' style='background-color: rgb(255, 192, 203);' title='pink' type='checkbox' value='pink'><input class='colorTagSelector tagSelector indigo' name='tagSelector' style='background-color: rgb(75, 0, 130);' title='indigo' type='checkbox' value='indigo'><input class='colorTagSelector tagSelector aqua' name='tagSelector' style='background-color: rgb(0, 255, 255);' title='aqua' type='checkbox' value='aqua'><input class='colorTagSelector tagSelector tan' name='tagSelector' style='background-color: rgb(210, 180, 140);' title='tan' type='checkbox' value='tan'><input class='colorTagSelector tagSelector darkred' name='tagSelector' style='background-color: rgb(139, 0, 0);' title='darkred' type='checkbox' value='darkred'></div></div></div></div></div><div class='ui-dialog-buttonset' style='text-align: right; position: absolute; bottom: 4px; right: 4px;'><button class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' icon='ui-icon-close' id='redBatchTranslatorClose' role='button' type='button'><span class='ui-button-text'>Cancel</span></button><button class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' icon='ui-icon-plus' id='redBatchTranslatorTranslate' role='button' type='button'><span class='ui-button-text'>Translate Now</span></button></div></div></div>`);
         this.parent = parent;
-        this.container.classList.add("ui-widget-overlay", "ui-front");
-        this.container.style.opacity = "1";
-        this.container.style.backgroundColor = "rgba(170, 170, 170, .3)";
-        this.container.style.display = "flex";
-        this.container.style.justifyContent = "center";
-        this.container.style.alignItems = "center";
+        this.monster = this.$monster[0];
+        // Search the monster for our elements
+        this.selectTrans = this.$monster.find("#redBatchTranslatorSelect")[0];
+        this.selectSource = this.$monster.find("#redBatchTranslatorSourceSelect")[0];
+        this.selectDestination = this.$monster.find("#redBatchTranslatorDestinationSelect")[0];
+        this.checkSave = this.$monster.find("#redBatchTranslatorSave")[0];
+        this.checkIgnore = this.$monster.find("#redBatchTranslatorIgnore")[0];
+        this.checkStrict = this.$monster.find("#redBatchTranslatorStrict")[0];
+        this.blacklistContainer = this.$monster.find("#redBatchTranslatorBlacklist")[0];
+        this.whitelistContainer = this.$monster.find("#redBatchTranslatorWhitelist")[0];
+        // Buttons
+        this.$monster.find("#redBatchTranslatorClose")[0].addEventListener("click", () => {
+            this.close();
+        });
+        this.$monster.find("#redBatchTranslatorTranslate")[0].addEventListener("click", () => {
+            this.close();
+            this.translate();
+        });
+    }
+    open() {
+        this.updateColumns();
+        this.updateTranslatorsSelect();
+        // Show
+        document.body.appendChild(this.monster);
+    }
+    translate() {
+        // Do we have some files or not?
+        let files = trans.getCheckedFiles();
+        if (files.length == 0) {
+            files = trans.getAllFiles();
+        }
+        let options = {
+            translator: this.selectTrans.value,
+            source: parseInt(this.selectSource.value),
+            destination: parseInt(this.selectDestination.value),
+            ignoreTranslated: this.checkIgnore.checked,
+            strict: this.checkStrict.checked,
+            saveOnEachBatch: this.checkSave.checked,
+            blacklist: this.getTags(this.blacklistContainer),
+            whitelist: this.getTags(this.whitelistContainer),
+            files: files
+        };
+        this.parent.translateProject(options);
+    }
+    getTags(container) {
+        let tags = [];
+        let elements = container.getElementsByClassName("tagSelector");
+        for (let i = 0; i < elements.length; i++) {
+            let element = elements[i];
+            if (element.checked) {
+                tags.push(element.title);
+            }
+        }
+        return tags;
+    }
+    close() {
+        document.body.removeChild(this.monster);
+    }
+    updateColumns() {
+        let oldSource = this.selectSource.value != "" ? this.selectSource.value : "0";
+        let oldDestination = this.selectDestination.value != "" ? this.selectDestination.value : "1";
+        // Remove old
+        while (this.selectSource.firstChild) {
+            this.selectSource.removeChild(this.selectSource.firstChild);
+        }
+        while (this.selectDestination.firstChild) {
+            this.selectDestination.removeChild(this.selectDestination.firstChild);
+        }
+        // Array of names = trans.colHeaders
+        for (let i = 0; i < trans.colHeaders.length; i++) {
+            this.selectSource.appendChild($(`<option value="${i}">${trans.colHeaders[i]}</option>`)[0]);
+            if (i > 0) {
+                this.selectDestination.appendChild($(`<option value="${i}">${trans.colHeaders[i]}</option>`)[0]);
+            }
+        }
+        this.selectSource.value = oldSource;
+        this.selectDestination.value = oldDestination;
         document.addEventListener("keydown", (ev) => {
-            if (this.container.parentNode == document.body && ev.key == "Escape") {
+            if (this.monster.parentNode == document.body && ev.key == "Escape") {
+                ev.preventDefault();
                 this.parent.close();
             }
         });
-        let innerWindow = document.createElement("div");
-        innerWindow.style.backgroundColor = "white";
-        innerWindow.style.width = "600px";
-        innerWindow.style.height = "500px";
-        innerWindow.style.fontSize = "1.2ex";
-        this.container.appendChild(innerWindow);
-        let header = document.createElement("div");
-        header.style.backgroundColor = "black";
-        header.style.color = "white";
-        header.style.lineHeight = "30px";
-        header.style.paddingLeft = "10px";
-        header.innerHTML = "<h1 style='margin:0px'>Red Batch Translation</h1>";
-        innerWindow.appendChild(header);
-        let contents = document.createElement("div");
-        contents.style.padding = "10px";
-        innerWindow.appendChild(contents);
-        contents.appendChild($("<h2 style='margin: 0px;'>Select Translator</h2>")[0]);
-        contents.appendChild($("<hr></hr>")[0]);
-        this.transSelect = this.getTranslatorsSelect();
-        contents.appendChild(this.transSelect);
     }
-    open() {
-        document.body.appendChild(this.container);
-        let updateTransSelect = this.getTranslatorsSelect();
-        this.transSelect.parentElement.replaceChild(this.transSelect, updateTransSelect);
-        this.transSelect = updateTransSelect;
-    }
-    close() {
-        document.body.removeChild(this.container);
-    }
-    getTranslatorsSelect() {
-        let transSelect = document.createElement("select");
+    updateTranslatorsSelect() {
+        let oldTrans = this.selectTrans.value == "" ? trans.project.options.translator : this.selectTrans.value;
+        // Remove old
+        while (this.selectTrans.firstChild) {
+            this.selectTrans.removeChild(this.selectTrans.firstChild);
+        }
         let transOptions = [];
         for (let i = 0; i < trans.translator.length; i++) {
             let id = trans.translator[i];
@@ -67,17 +114,21 @@ class RedBatchTranslatorWindow {
             return 0;
         });
         transOptions.forEach((option) => {
-            transSelect.appendChild(option);
+            this.selectTrans.appendChild(option);
         });
-        return transSelect;
+        this.selectTrans.value = oldTrans;
     }
 }
 class RedBatchTranslatorRow {
     constructor(file, index) {
         this.location = [file, index];
     }
-    getValue() {
-        return trans.project.files[this.location[0]].data[this.location[1]][0];
+    getValue(source) {
+        return trans.project.files[this.location[0]].data[this.location[1]][source];
+    }
+    isEmpty(source) {
+        let value = this.getValue(source);
+        return value == undefined || value == null || value == "";
     }
     isTranslated() {
         let cells = trans.project.files[this.location[0]].data[this.location[1]];
@@ -125,23 +176,7 @@ class RedBatchTranslator {
         this.window = new RedBatchTranslatorWindow(this);
     }
     open() {
-        // TODO: Make options window when I feel like it
-        //this.window.open();
-        let files = trans.getCheckedFiles();
-        if (files.length == 0) {
-            files = trans.getAllFiles();
-        }
-        let options = {
-            translator: "redsugoi",
-            destination: 1,
-            blacklist: ["red"],
-            ignoreTranslated: true,
-            whitelist: [],
-            strict: false,
-            saveOnEachBatch: true,
-            files: files
-        };
-        this.translateProject(options);
+        this.window.open();
     }
     close() {
         this.window.close();
@@ -152,12 +187,6 @@ class RedBatchTranslator {
     }
     translateProject(options) {
         let aborted = false;
-        /*
-        options.buttons = [{
-            text: "text to display",
-            onClick : function
-        }]
-        */
         ui.showLoading({ buttons: [
                 {
                     text: "Abort",
@@ -199,7 +228,7 @@ class RedBatchTranslator {
                     continue;
                 }
                 // Empty row?
-                if (row.getValue() == undefined || row.getValue() == null || row.getValue().trim() == "") {
+                if (row.isEmpty(options.source)) {
                     continue;
                 }
                 if (options.blacklist.length == 0 && options.whitelist.length == 0) {
@@ -255,7 +284,7 @@ class RedBatchTranslator {
             currentSize = 0;
         };
         for (let i = 0; i < rows.length; i++) {
-            let text = rows[i].getValue();
+            let text = rows[i].getValue(options.source);
             if (currentSize > 0 && (currentSize + text.length) > maxLength) {
                 addToBatches();
             }
@@ -271,7 +300,12 @@ class RedBatchTranslator {
         let translate = () => {
             ui.loadingProgress(0, `Translating batch ${batchIndex + 1} of ${batches.length}`);
             let myBatch = batchIndex++;
+            let alwaysSafeguard = undefined; // Stupid nodejs Timeout type
             let always = () => {
+                if (alwaysSafeguard != undefined) {
+                    clearTimeout(alwaysSafeguard);
+                    alwaysSafeguard = undefined;
+                }
                 let proceed = () => {
                     if (batchIndex >= batches.length) {
                         let batchEnd = Date.now();
@@ -315,12 +349,15 @@ class RedBatchTranslator {
                 translatorEngine.translate(batches[myBatch], {
                     onError: () => {
                         ui.error("[RedBatchTranslator] Failed to translate batch!");
+                        alwaysSafeguard = setTimeout(always, 500);
                     },
                     onAfterLoading: (result) => {
                         ui.log(`[RedBatchTranslator] Inserting into tables...`);
                         for (let i = 0; i < result.translation.length; i++) {
                             batchesRows[myBatch][i].setValue(result.translation[i], options.destination);
                         }
+                        ui.loadingProgress(100 * (batchIndex + 1) / batches.length);
+                        alwaysSafeguard = setTimeout(always, 500);
                     },
                     always: always,
                     progress: (perc) => {

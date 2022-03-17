@@ -1,3 +1,7 @@
+# Version 0.08
++ Gets an actual option window when using.
+    + While it supports any translators, some of the non-red translators might behave erratically when called this way. It's mostly there as a "well, there it is". If not using red translator engines I'd recommend just using the default batch translator for full support.
+
 # Version 0.07
 + Saving the project is now done asynchronously. This is a massive speed gain on small projects, but a pleasant speed gain on projects of any size.
     + This also means that there is less time wasted saving the project between batches, so uptime is higher when the bottleneck is the translation process itself.
