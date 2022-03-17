@@ -132,10 +132,10 @@ class RedBatchTranslatorWindow {
 		}
 
 		transOptions.sort((a,b) => {
-			let na = a.childNodes[0].nodeValue!;
-			let nb = b.childNodes[0].nodeValue!;
-			if (na < nb) return 1;
-			else if (na > nb) return -1;
+			let na = a.innerText.toUpperCase();
+			let nb = b.innerText.toUpperCase();
+			if (na > nb) return 1;
+			else if (na < nb) return -1;
 			return 0;
 		});
 
