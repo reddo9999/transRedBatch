@@ -12,25 +12,7 @@ class RedBatchTranslator {
     }
 
     public open () {
-        // TODO: Make options window when I feel like it
-        //this.window.open();
-
-        let files = trans.getCheckedFiles();
-        if (files.length == 0) {
-            files = trans.getAllFiles();
-        }
-
-        let options = {
-            translator : "redsugoi",
-            destination : 1,
-            blacklist : ["red"],
-            ignoreTranslated : true,
-            whitelist: [],
-            strict : false, // requires every whitelist to be successful
-            saveOnEachBatch : true,
-            files : files
-        }
-        this.translateProject(options);
+        this.window.open();
     }
 
     public close () {
@@ -44,6 +26,7 @@ class RedBatchTranslator {
 
     public translateProject (options : {
         translator : string,
+        source : number,
         destination : number,
         ignoreTranslated : boolean,
         blacklist : Array<string>,
@@ -53,12 +36,6 @@ class RedBatchTranslator {
         saveOnEachBatch : boolean,
     }) {
         let aborted = false;
-        /*
-        options.buttons = [{
-            text: "text to display",
-            onClick : function
-        }]
-        */
         ui.showLoading({buttons : [
             {
                 text : "Abort",
@@ -106,7 +83,7 @@ class RedBatchTranslator {
                 }
 
                 // Empty row?
-                if (row.getValue() == undefined || row.getValue() == null || row.getValue().trim() == "") {
+                if (row.isEmpty(options.source)) {
                     continue;
                 }
 
@@ -163,7 +140,7 @@ class RedBatchTranslator {
         };
 
         for (let i = 0; i < rows.length; i++) {
-            let text = rows[i].getValue();
+            let text = rows[i].getValue(options.source);
             if (currentSize > 0 && (currentSize + text.length) > maxLength) {
                 addToBatches();
             }
@@ -182,7 +159,12 @@ class RedBatchTranslator {
         let translate = () => {
             ui.loadingProgress(0, `Translating batch ${batchIndex + 1} of ${batches.length}`);
             let myBatch = batchIndex++;
+            let alwaysSafeguard : any = undefined; // Stupid nodejs Timeout type
             let always = () => {
+                if (alwaysSafeguard != undefined) {
+                    clearTimeout(alwaysSafeguard);
+                    alwaysSafeguard = undefined;
+                }
                 let proceed = () => {
                     if (batchIndex >= batches.length) {
                         let batchEnd = Date.now();
@@ -225,6 +207,7 @@ class RedBatchTranslator {
                     {
                         onError : () => {
                             ui.error("[RedBatchTranslator] Failed to translate batch!");
+                            alwaysSafeguard = setTimeout(always, 500);
                         },
                         onAfterLoading : (result : {
                             sourceText : string,
@@ -236,6 +219,8 @@ class RedBatchTranslator {
                             for (let i = 0; i < result.translation.length; i++) {
                                 batchesRows[myBatch][i].setValue(result.translation[i], options.destination);
                             }
+                            ui.loadingProgress(100 * (batchIndex + 1)/batches.length);
+                            alwaysSafeguard = setTimeout(always, 500);
                         },
                         always : always,
                         progress : (perc : number) => {
