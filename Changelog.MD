@@ -1,3 +1,6 @@
+# Version 0.09
++ Remove minimum height from the batch window.
+
 # Version 0.08
 + Gets an actual option window when using.
     + While it supports any translators, some of the non-red translators might behave erratically when called this way. It's mostly there as a "well, there it is". If not using red translator engines I'd recommend just using the default batch translator for full support.
