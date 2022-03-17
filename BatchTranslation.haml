@@ -1,0 +1,100 @@
+.ui-widget-overlay.ui-front{:style => "opacity: 1; background-color: rgba(170, 170, 170, 0.3); display: flex; justify-content: center; align-items: center;"}
+    %div{:style => "background-color: white; width: 600px; height: 500px; font-size: 1.2ex; position: relative;"}
+        %div{:style => "background-color: black; color: white; line-height: 30px; padding-left: 10px;"}
+            %h1{:style => "margin:0px"} Red Batch Translation
+        %div{:style => "padding: 10px;"}
+            %h2{:style => "margin: 0px;"}
+                Select Translator
+                %select#redBatchTranslatorSelect{:style => "margin-left: 2ex"}
+            %hr
+            .flex.col-2
+                .fieldmember.sourceCol
+                    %h2{:style => "margin:0px"} Source column
+                    %label.columnSelector
+                        %select#redBatchTranslatorSourceSelect
+                    .smallInfo
+                        Which column is the source text to translate for?
+                        %br
+                        (default is key column / leftmost column).
+                .fieldmember
+                    %h2{:style => "margin:0px"} Target column
+                    %label.targetCol
+                        %select#redBatchTranslatorDestinationSelect
+                    .smallInfo
+                        Which column is the translated text put into.
+                        %br
+                        (Can not same with source column)
+            %hr
+            %h2{:style => "margin: 0px; margin-bottom: 1ex;"} Options
+            %label.flex.fullWidth.bottomSpace
+                .flexMain
+                    %h3.label{:style => "margin: 0px;"} Save on each Batch
+                    .info If checked, the project is saved after every batch translation.
+                %div
+                    %input.flipSwitch.translateOther#redBatchTranslatorSave{:type => "checkbox", :value => "1", :checked => "true"}
+            %label.flex.fullWidth.bottomSpace
+                .flexMain
+                    %h3.label{:style => "margin: 0px;"} Ignore translated
+                    .info If checked, rows with translations will not be translated.
+                %div
+                    %input.flipSwitch.translateOther#redBatchTranslatorIgnore{:type => "checkbox", :value => "1", :checked => "true"}
+            %label.flex.fullWidth.bottomSpace
+                .flexMain
+                    %h3.label{:style => "margin: 0px;"} Strict Whitelist
+                    .info If checked, rows with no tags can fail the whitelist.
+                %div
+                    %input.flipSwitch.translateOther#redBatchTranslatorStrict{:type => "checkbox", :value => "1"}
+            %hr
+            .options.fieldgroup#redBatchTranslatorBlacklist
+                .fieldmember
+                    %h2{:style => "margin: 0px;"} Blacklist
+                    .info Rows that have any of the selected tags will not be translated
+                    .colorTagSelector
+                        .uiTags.uiTagsWrapper.rendered{"data-mark" => "unknown"}
+                            %input.colorTagSelector.tagSelector.red{:name => "tagSelector", :style => "background-color: rgb(255, 0, 0);", :title => "red", :type => "checkbox", :value => "red", :checked => "true"}/
+                            %input.colorTagSelector.tagSelector.yellow{:name => "tagSelector", :style => "background-color: rgb(255, 255, 0);", :title => "yellow", :type => "checkbox", :value => "yellow"}/
+                            %input.colorTagSelector.tagSelector.green{:name => "tagSelector", :style => "background-color: rgb(0, 128, 0);", :title => "green", :type => "checkbox", :value => "green"}/
+                            %input.colorTagSelector.tagSelector.blue{:name => "tagSelector", :style => "background-color: rgb(0, 0, 255);", :title => "blue", :type => "checkbox", :value => "blue"}/
+                            %input.colorTagSelector.tagSelector.gold{:name => "tagSelector", :style => "background-color: rgb(212, 175, 55);", :title => "gold", :type => "checkbox", :value => "gold"}/
+                            %input.colorTagSelector.tagSelector.purple{:name => "tagSelector", :style => "background-color: rgb(128, 0, 128);", :title => "purple", :type => "checkbox", :value => "purple"}/
+                            %input.colorTagSelector.tagSelector.black{:name => "tagSelector", :style => "background-color: rgb(0, 0, 0);", :title => "black", :type => "checkbox", :value => "black"}/
+                            %input.colorTagSelector.tagSelector.gray{:name => "tagSelector", :style => "background-color: rgb(128, 128, 128);", :title => "gray", :type => "checkbox", :value => "gray"}/
+                            %input.colorTagSelector.tagSelector.white{:name => "tagSelector", :style => "background-color: rgb(255, 255, 255);", :title => "white", :type => "checkbox", :value => "white"}/
+                            %input.colorTagSelector.tagSelector.silver{:name => "tagSelector", :style => "background-color: rgb(192, 192, 192);", :title => "silver", :type => "checkbox", :value => "silver"}/
+                            %input.colorTagSelector.tagSelector.pink{:name => "tagSelector", :style => "background-color: rgb(255, 192, 203);", :title => "pink", :type => "checkbox", :value => "pink"}/
+                            %input.colorTagSelector.tagSelector.indigo{:name => "tagSelector", :style => "background-color: rgb(75, 0, 130);", :title => "indigo", :type => "checkbox", :value => "indigo"}/
+                            %input.colorTagSelector.tagSelector.aqua{:name => "tagSelector", :style => "background-color: rgb(0, 255, 255);", :title => "aqua", :type => "checkbox", :value => "aqua"}/
+                            %input.colorTagSelector.tagSelector.tan{:name => "tagSelector", :style => "background-color: rgb(210, 180, 140);", :title => "tan", :type => "checkbox", :value => "tan"}/
+                            %input.colorTagSelector.tagSelector.darkred{:name => "tagSelector", :style => "background-color: rgb(139, 0, 0);", :title => "darkred", :type => "checkbox", :value => "darkred"}/
+            %hr
+            .options.fieldgroup#redBatchTranslatorWhitelist
+                .fieldmember
+                    %h2{:style => "margin: 0px;"} Whitelist
+                    .info If any of the following colors is selected, only rows with that color will be translated. This overrides the Blacklist.
+                    .colorTagSelector
+                        .uiTags.uiTagsWrapper.rendered{"data-mark" => "unknown"}
+                            %input.colorTagSelector.tagSelector.red{:name => "tagSelector", :style => "background-color: rgb(255, 0, 0);", :title => "red", :type => "checkbox", :value => "red"}/
+                            %input.colorTagSelector.tagSelector.yellow{:name => "tagSelector", :style => "background-color: rgb(255, 255, 0);", :title => "yellow", :type => "checkbox", :value => "yellow"}/
+                            %input.colorTagSelector.tagSelector.green{:name => "tagSelector", :style => "background-color: rgb(0, 128, 0);", :title => "green", :type => "checkbox", :value => "green"}/
+                            %input.colorTagSelector.tagSelector.blue{:name => "tagSelector", :style => "background-color: rgb(0, 0, 255);", :title => "blue", :type => "checkbox", :value => "blue"}/
+                            %input.colorTagSelector.tagSelector.gold{:name => "tagSelector", :style => "background-color: rgb(212, 175, 55);", :title => "gold", :type => "checkbox", :value => "gold"}/
+                            %input.colorTagSelector.tagSelector.purple{:name => "tagSelector", :style => "background-color: rgb(128, 0, 128);", :title => "purple", :type => "checkbox", :value => "purple"}/
+                            %input.colorTagSelector.tagSelector.black{:name => "tagSelector", :style => "background-color: rgb(0, 0, 0);", :title => "black", :type => "checkbox", :value => "black"}/
+                            %input.colorTagSelector.tagSelector.gray{:name => "tagSelector", :style => "background-color: rgb(128, 128, 128);", :title => "gray", :type => "checkbox", :value => "gray"}/
+                            %input.colorTagSelector.tagSelector.white{:name => "tagSelector", :style => "background-color: rgb(255, 255, 255);", :title => "white", :type => "checkbox", :value => "white"}/
+                            %input.colorTagSelector.tagSelector.silver{:name => "tagSelector", :style => "background-color: rgb(192, 192, 192);", :title => "silver", :type => "checkbox", :value => "silver"}/
+                            %input.colorTagSelector.tagSelector.pink{:name => "tagSelector", :style => "background-color: rgb(255, 192, 203);", :title => "pink", :type => "checkbox", :value => "pink"}/
+                            %input.colorTagSelector.tagSelector.indigo{:name => "tagSelector", :style => "background-color: rgb(75, 0, 130);", :title => "indigo", :type => "checkbox", :value => "indigo"}/
+                            %input.colorTagSelector.tagSelector.aqua{:name => "tagSelector", :style => "background-color: rgb(0, 255, 255);", :title => "aqua", :type => "checkbox", :value => "aqua"}/
+                            %input.colorTagSelector.tagSelector.tan{:name => "tagSelector", :style => "background-color: rgb(210, 180, 140);", :title => "tan", :type => "checkbox", :value => "tan"}/
+                            %input.colorTagSelector.tagSelector.darkred{:name => "tagSelector", :style => "background-color: rgb(139, 0, 0);", :title => "darkred", :type => "checkbox", :value => "darkred"}/
+        .ui-dialog-buttonset{:style => "text-align: right; position: absolute; bottom: 4px; right: 4px;"}
+            %button.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only#redBatchTranslatorClose{:icon => "ui-icon-close", :role => "button", :type => "button"}
+                %span.ui-button-text Cancel
+            %button.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only#redBatchTranslatorTranslate{:icon => "ui-icon-plus", :role => "button", :type => "button"}
+                %span.ui-button-text Translate Now
+-# let options = {
+-#            blacklist : ["red"],
+-#            whitelist: [],
+-#            files : files
+-#        }
