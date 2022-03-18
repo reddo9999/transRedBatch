@@ -11,6 +11,7 @@ const translatableNoteRegExp = /(<SG)|(<SAC.+?:)/gim;
 const translatablePluginRegExp = /^(?:DW_(?!SET))|(?:D_TEXT )|(?:addLog )|(?:DW_)|(?:ShowInfo )/gim;
 const translatablePluginJSRegExp = /[^\x21-\x7E\* ]+/g;
 const translatableControlVariable = /.*/g;
+const translatableVxAceScript = ["Vocab", "装備拡張", "Custom Menu Base"];
 
 class RedBatchCheatSheet {
     public checkProject () {
@@ -45,6 +46,7 @@ class RedBatchCheatSheet {
             trans.travelContext(trans.getAllFiles(), "script/"),
             translatablePluginJSRegExp
         );
+
         this.checkCollection(
             trans.travelContext(trans.getAllFiles(), "inlinescript"),
             translatablePluginJSRegExp
@@ -61,6 +63,30 @@ class RedBatchCheatSheet {
                 let fileData = trans.project.files[file];
                 for (let index = 0; index < fileData.data.length; index++) {
                     trans.project.files[file].tags[index] = ["red"];
+                }
+            }
+        }
+
+        // "Scripts.txt"
+        let fileData = trans.project.files["Scripts.txt"];
+        if (fileData != undefined) {
+            for (let index = 0; index < fileData.data.length; index++) {
+                let text = fileData.data[index][0];
+                let contexts = fileData.context[index];
+                let yellow = false;
+                for (let c = 0; c < contexts.length; c++) {
+                    let context = contexts[c];
+                    for (let t = 0; t < translatableVxAceScript.length; t++) {
+                        let translatableContext = translatableVxAceScript[t];
+                        if (context.indexOf("Scripts/" + translatableContext) != -1) {
+                            fileData.tags[index] = ["yellow"];
+                            yellow = true;
+                            break; // on to the next row
+                        }
+                    }
+                    if (!yellow) {
+                        fileData.tags[index] = ["red"];
+                    }
                 }
             }
         }
