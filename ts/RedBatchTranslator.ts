@@ -43,6 +43,7 @@ class RedBatchTranslator {
                     if (confirm(t("Are you sure you want to abort?"))) {
                         aborted = true; // :/
                         trans.abortTranslation();
+                        this.refresh();
                     }
                 }
             },
