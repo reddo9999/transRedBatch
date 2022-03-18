@@ -34,7 +34,7 @@ $(document).ready(() => {
             {
                 maxLength: wordWrapNoPicture,
                 context: [
-                    "dialogue", "message1", "message2", "message3", 
+                    "dialogue", "message1", "message2", "message3",
                     "description", "message", "noPicture", "scrollingMessage"
                 ]
             }
@@ -48,7 +48,7 @@ $(document).ready(() => {
             {
                 maxLength: wordWrapPicture,
                 context: [
-                    "hasPicture"
+                    "hasPicture", "Dialogue",
                 ]
             }
         );
