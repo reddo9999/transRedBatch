@@ -52,6 +52,8 @@ $(document).ready(() => {
                 ]
             }
         );
+
+        trans.refreshGrid();
 	});
 
     let $buttonContainer = $(buttonContainer);
