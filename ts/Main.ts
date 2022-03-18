@@ -54,8 +54,8 @@ $(document).ready(() => {
         );
 	});
 
-    
-	buttonContainer.appendChild(prepareButton.getButton());
-	buttonContainer.appendChild(translateButton.getButton());
-	buttonContainer.appendChild(wrapButton.getButton());
+    let $buttonContainer = $(buttonContainer);
+	$buttonContainer.prepend(wrapButton.getButton());
+	$buttonContainer.prepend(translateButton.getButton());
+	$buttonContainer.prepend(prepareButton.getButton());
 });
