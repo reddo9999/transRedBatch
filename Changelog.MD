@@ -1,3 +1,12 @@
+# Version 0.10
++ Fix: Translators sorted badly.
++ Fix: Grid not updated after wrapping
++ Fix: Grid not updated after aborting translations
++ Some more VX Ace on old parser support
++ Try to order the buttons
++ Removed most unnecessary performance checks.
++ Known bugs: Wrong translator selected by default.
+
 # Version 0.09
 + Remove minimum height from the batch window.
 

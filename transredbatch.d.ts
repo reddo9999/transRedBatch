@@ -29,12 +29,6 @@ declare class RedBatchTranslatorRow {
     setValue(text: string, destination: number): void;
     getTags(): any;
 }
-declare class RedPerformance {
-    private perfStart;
-    private perfEnd;
-    end(): void;
-    getSeconds(): number;
-}
 declare class RedBatchTranslator {
     private window;
     private saving;
@@ -54,7 +48,17 @@ declare class RedBatchTranslator {
         strict: boolean;
         saveOnEachBatch: boolean;
     }): void;
+    insertIntoTables(result: {
+        sourceText: string;
+        translationText: string;
+        source: Array<string>;
+        translation: Array<string>;
+    }, batchesRows: Array<Array<RedBatchTranslatorRow>>, myBatch: number, destination: number): Promise<void>;
     saveProject(): void;
+    log(...texts: Array<string>): void;
+    error(...texts: Array<string>): void;
+    print(...elements: Array<Element | Text>): void;
+    printError(...elements: Array<Element | Text>): void;
 }
 declare function t(text: string): string;
 declare class RedButtonManagerButton {
@@ -75,9 +79,16 @@ declare const translatableNoteRegExp: RegExp;
 declare const translatablePluginRegExp: RegExp;
 declare const translatablePluginJSRegExp: RegExp;
 declare const translatableControlVariable: RegExp;
+declare const translatableVxAceScript: string[];
 declare class RedBatchCheatSheet {
     checkProject(): void;
     checkCollection(collection: any, regExp: RegExp): void;
     checkFile(file: string, regExp: RegExp): void;
     checkRow(file: string, index: number, regExp: RegExp): void;
+}
+declare class RedPerformance {
+    private perfStart;
+    private perfEnd;
+    end(): void;
+    getSeconds(): number;
 }

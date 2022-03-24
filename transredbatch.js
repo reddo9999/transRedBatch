@@ -107,11 +107,11 @@ class RedBatchTranslatorWindow {
             transOptions.push(option);
         }
         transOptions.sort((a, b) => {
-            let na = a.childNodes[0].nodeValue;
-            let nb = b.childNodes[0].nodeValue;
-            if (na < nb)
+            let na = a.innerText.toUpperCase();
+            let nb = b.innerText.toUpperCase();
+            if (na > nb)
                 return 1;
-            else if (na > nb)
+            else if (na < nb)
                 return -1;
             return 0;
         });
@@ -154,23 +154,9 @@ class RedBatchTranslatorRow {
         return tags;
     }
 }
-class RedPerformance {
-    constructor() {
-        this.perfStart = Date.now();
-        this.perfEnd = 0;
-    }
-    end() {
-        this.perfEnd = Date.now();
-    }
-    getSeconds() {
-        let timeTaken = this.perfEnd - this.perfStart;
-        return (Math.round(timeTaken / 100) / 10);
-    }
-}
 /// <reference path="RedBatchTranslator/RedBatchTranslatorButton.ts" />
 /// <reference path="RedBatchTranslator/RedBatchTranslatorWindow.ts" />
 /// <reference path="RedBatchTranslator/RedBatchTranslatorRow.ts" />
-/// <reference path="RedPerformance.ts" />
 class RedBatchTranslator {
     constructor() {
         this.saving = false;
@@ -196,6 +182,7 @@ class RedBatchTranslator {
                         if (confirm(t("Are you sure you want to abort?"))) {
                             aborted = true; // :/
                             trans.abortTranslation();
+                            this.refresh();
                         }
                     }
                 },
@@ -303,6 +290,11 @@ class RedBatchTranslator {
             ui.loadingProgress(0, `Translating batch ${batchIndex + 1} of ${batches.length}`);
             let myBatch = batchIndex++;
             let alwaysSafeguard = undefined; // Stupid nodejs Timeout type
+            let safeguardAlways = () => {
+                if (alwaysSafeguard == undefined) {
+                    alwaysSafeguard = setTimeout(always, 100);
+                }
+            };
             let always = () => {
                 if (alwaysSafeguard != undefined) {
                     clearTimeout(alwaysSafeguard);
@@ -351,15 +343,12 @@ class RedBatchTranslator {
                 translatorEngine.translate(batches[myBatch], {
                     onError: () => {
                         ui.error("[RedBatchTranslator] Failed to translate batch!");
-                        alwaysSafeguard = setTimeout(always, 500);
+                        safeguardAlways();
                     },
                     onAfterLoading: (result) => {
-                        ui.log(`[RedBatchTranslator] Inserting into tables...`);
-                        for (let i = 0; i < result.translation.length; i++) {
-                            batchesRows[myBatch][i].setValue(result.translation[i], options.destination);
-                        }
+                        this.insertIntoTables(result, batchesRows, myBatch, options.destination);
                         ui.loadingProgress(100 * (batchIndex + 1) / batches.length);
-                        alwaysSafeguard = setTimeout(always, 500);
+                        safeguardAlways();
                     },
                     always: always,
                     progress: (perc) => {
@@ -369,6 +358,13 @@ class RedBatchTranslator {
             }
         };
         translate();
+    }
+    async insertIntoTables(result, batchesRows, myBatch, destination) {
+        let text = document.createTextNode(`[RedBatchTranslator] Inserting into tables...`);
+        this.print(text);
+        for (let i = 0; i < result.translation.length; i++) {
+            batchesRows[myBatch][i].setValue(result.translation[i], destination);
+        }
     }
     saveProject() {
         if (this.saving) {
@@ -384,6 +380,40 @@ class RedBatchTranslator {
                 }
             });
         }
+    }
+    log(...texts) {
+        let elements = [];
+        texts.forEach(text => {
+            elements.push(document.createTextNode(text));
+        });
+        this.print(...elements);
+    }
+    error(...texts) {
+        let elements = [];
+        texts.forEach(text => {
+            elements.push(document.createTextNode(text));
+        });
+        this.printError(...elements);
+    }
+    print(...elements) {
+        let consoleWindow = $("#loadingOverlay .console")[0];
+        let pre = document.createElement("pre");
+        pre.style.whiteSpace = "pre-wrap";
+        elements.forEach(element => {
+            pre.appendChild(element);
+        });
+        consoleWindow.appendChild(pre);
+    }
+    printError(...elements) {
+        let consoleWindow = $("#loadingOverlay .console")[0];
+        let pre = document.createElement("pre");
+        pre.style.color = "red";
+        pre.style.fontWeight = "bold";
+        pre.style.whiteSpace = "pre-wrap";
+        elements.forEach(element => {
+            pre.appendChild(element);
+        });
+        consoleWindow.appendChild(pre);
     }
 }
 class RedButtonManagerButton {
@@ -457,13 +487,15 @@ $(document).ready(() => {
         {
             maxLength: wordWrapPicture,
             context: [
-                "hasPicture"
+                "hasPicture", "Dialogue",
             ]
         });
+        trans.refreshGrid();
     });
-    buttonContainer.appendChild(prepareButton.getButton());
-    buttonContainer.appendChild(translateButton.getButton());
-    buttonContainer.appendChild(wrapButton.getButton());
+    let $buttonContainer = $(buttonContainer);
+    $buttonContainer.prepend(wrapButton.getButton());
+    $buttonContainer.prepend(translateButton.getButton());
+    $buttonContainer.prepend(prepareButton.getButton());
 });
 const removableContexts = [
     "animations",
@@ -477,6 +509,7 @@ const translatableNoteRegExp = /(<SG)|(<SAC.+?:)/gim;
 const translatablePluginRegExp = /^(?:DW_(?!SET))|(?:D_TEXT )|(?:addLog )|(?:DW_)|(?:ShowInfo )/gim;
 const translatablePluginJSRegExp = /[^\x21-\x7E\* ]+/g;
 const translatableControlVariable = /.*/g;
+const translatableVxAceScript = ["Vocab", "装備拡張", "Custom Menu Base"];
 class RedBatchCheatSheet {
     checkProject() {
         // Remove untranslatable rows
@@ -504,6 +537,29 @@ class RedBatchCheatSheet {
                 let fileData = trans.project.files[file];
                 for (let index = 0; index < fileData.data.length; index++) {
                     trans.project.files[file].tags[index] = ["red"];
+                }
+            }
+        }
+        // "Scripts.txt"
+        let fileData = trans.project.files["Scripts.txt"];
+        if (fileData != undefined) {
+            for (let index = 0; index < fileData.data.length; index++) {
+                let text = fileData.data[index][0];
+                let contexts = fileData.context[index];
+                let yellow = false;
+                for (let c = 0; c < contexts.length; c++) {
+                    let context = contexts[c];
+                    for (let t = 0; t < translatableVxAceScript.length; t++) {
+                        let translatableContext = translatableVxAceScript[t];
+                        if (context.indexOf("Scripts/" + translatableContext) != -1) {
+                            fileData.tags[index] = ["yellow"];
+                            yellow = true;
+                            break; // on to the next row
+                        }
+                    }
+                    if (!yellow) {
+                        fileData.tags[index] = ["red"];
+                    }
                 }
             }
         }
@@ -543,3 +599,16 @@ class RedBatchCheatSheet {
     }
 }
 trans.batchCheckSheet = new RedBatchCheatSheet();
+class RedPerformance {
+    constructor() {
+        this.perfStart = Date.now();
+        this.perfEnd = 0;
+    }
+    end() {
+        this.perfEnd = Date.now();
+    }
+    getSeconds() {
+        let timeTaken = this.perfEnd - this.perfStart;
+        return (Math.round(timeTaken / 100) / 10);
+    }
+}
