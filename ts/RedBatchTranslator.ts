@@ -1,7 +1,6 @@
 /// <reference path="RedBatchTranslator/RedBatchTranslatorButton.ts" />
 /// <reference path="RedBatchTranslator/RedBatchTranslatorWindow.ts" />
 /// <reference path="RedBatchTranslator/RedBatchTranslatorRow.ts" />
-/// <reference path="RedPerformance.ts" />
 class RedBatchTranslator {
     private window : RedBatchTranslatorWindow;
     private saving : boolean = false;
@@ -161,6 +160,13 @@ class RedBatchTranslator {
             ui.loadingProgress(0, `Translating batch ${batchIndex + 1} of ${batches.length}`);
             let myBatch = batchIndex++;
             let alwaysSafeguard : any = undefined; // Stupid nodejs Timeout type
+
+            let safeguardAlways = () => {
+                if (alwaysSafeguard == undefined) {
+                    alwaysSafeguard = setTimeout(always, 100);
+                }
+            };
+
             let always = () => {
                 if (alwaysSafeguard != undefined) {
                     clearTimeout(alwaysSafeguard);
@@ -208,7 +214,7 @@ class RedBatchTranslator {
                     {
                         onError : () => {
                             ui.error("[RedBatchTranslator] Failed to translate batch!");
-                            alwaysSafeguard = setTimeout(always, 500);
+                            safeguardAlways();
                         },
                         onAfterLoading : (result : {
                             sourceText : string,
@@ -216,12 +222,9 @@ class RedBatchTranslator {
                             source : Array<string>,
                             translation : Array<string>
                         }) => {
-                            ui.log(`[RedBatchTranslator] Inserting into tables...`);
-                            for (let i = 0; i < result.translation.length; i++) {
-                                batchesRows[myBatch][i].setValue(result.translation[i], options.destination);
-                            }
+                            this.insertIntoTables(result, batchesRows, myBatch, options.destination);
                             ui.loadingProgress(100 * (batchIndex + 1)/batches.length);
-                            alwaysSafeguard = setTimeout(always, 500);
+                            safeguardAlways();
                         },
                         always : always,
                         progress : (perc : number) => {
@@ -233,6 +236,19 @@ class RedBatchTranslator {
         };
         
         translate();
+    }
+
+    public async insertIntoTables (result : {
+        sourceText : string,
+        translationText : string,
+        source : Array<string>,
+        translation : Array<string>
+    }, batchesRows : Array<Array<RedBatchTranslatorRow>>, myBatch : number, destination : number) {
+        let text = document.createTextNode(`[RedBatchTranslator] Inserting into tables...`);
+        this.print(text);
+        for (let i = 0; i < result.translation.length; i++) {
+            batchesRows[myBatch][i].setValue(result.translation[i], destination);
+        }
     }
 
     public saveProject () {
@@ -248,5 +264,43 @@ class RedBatchTranslator {
                 }
             });
         }
+    }
+
+    public log (...texts : Array<string>) {
+        let elements : Array<Text> = [];
+        texts.forEach(text => {
+            elements.push(document.createTextNode(text));
+        });
+        this.print(...elements);
+    }
+
+    public error (...texts : Array<string>) {
+        let elements : Array<Text> = [];
+        texts.forEach(text => {
+            elements.push(document.createTextNode(text));
+        });
+        this.printError(...elements);
+    }
+
+    public print (...elements : Array<Element | Text>) {
+        let consoleWindow = $("#loadingOverlay .console")[0];
+        let pre = document.createElement("pre");
+        pre.style.whiteSpace = "pre-wrap";
+        elements.forEach(element => {
+            pre.appendChild(element);
+        });
+        consoleWindow.appendChild(pre);
+    }
+
+    public printError (...elements : Array<Element | Text>) {
+        let consoleWindow = $("#loadingOverlay .console")[0];
+        let pre = document.createElement("pre");
+        pre.style.color = "red";
+        pre.style.fontWeight = "bold";
+        pre.style.whiteSpace = "pre-wrap";
+        elements.forEach(element => {
+            pre.appendChild(element);
+        });
+        consoleWindow.appendChild(pre);
     }
 }
