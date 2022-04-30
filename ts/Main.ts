@@ -1,8 +1,8 @@
 /// <reference path="RedBatchTranslator.ts" />
 /// <reference path="RedButtonManager.ts" />
 
-const wordWrapNoPicture = "60";
-const wordWrapPicture = "50";
+const wordWrapNoPicture = "55";
+const wordWrapPicture = "45";
 
 var thisAddon = <any> this;
 
