@@ -1,4 +1,3 @@
-/// <reference path="RedBatchTranslator/RedBatchTranslatorButton.ts" />
 /// <reference path="RedBatchTranslator/RedBatchTranslatorWindow.ts" />
 /// <reference path="RedBatchTranslator/RedBatchTranslatorRow.ts" />
 class RedBatchTranslator {
