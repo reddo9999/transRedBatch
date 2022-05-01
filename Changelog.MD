@@ -1,3 +1,8 @@
+# Version 0.12
++ Fix: Correct default translator
++ Fix: It correctly loads now.
+
+
 # Version 0.10
 + Fix: Translators sorted badly.
 + Fix: Grid not updated after wrapping
