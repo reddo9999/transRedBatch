@@ -1,3 +1,5 @@
+declare var sys : any;
+
 class RedBatchTranslatorWindow {
     private parent : RedBatchTranslator;
     private $monster = $(`
@@ -12,6 +14,7 @@ class RedBatchTranslatorWindow {
     private checkStrict : HTMLInputElement;
     private blacklistContainer : HTMLDivElement;
     private whitelistContainer : HTMLDivElement;
+    private openedBefore = false;
 
     constructor (parent : RedBatchTranslator) {
         this.parent = parent;
@@ -113,8 +116,16 @@ class RedBatchTranslatorWindow {
         });
     }
 
+    public getDefaultTranslator () {
+        return trans.project.options.translator||sys.config.translator||"";
+    }
+
 	public updateTranslatorsSelect () {
-        let oldTrans = this.selectTrans.value == "" ? trans.project.options.translator : this.selectTrans.value;
+        let oldTrans = this.selectTrans.value == "" || !this.openedBefore ? this.getDefaultTranslator() : this.selectTrans.value;
+        if (oldTrans == "") {
+            oldTrans = "redsugoi";
+        }
+        this.openedBefore = true;
         // Remove old
         while (this.selectTrans.firstChild) {
             this.selectTrans.removeChild(this.selectTrans.firstChild);
