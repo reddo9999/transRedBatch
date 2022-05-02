@@ -59,7 +59,7 @@ thisAddon.optionsForm = {
         "description": "These contexts will wrap to the long length. So ideally these are the full screen contexts.",
         "HOOK": "thisAddon.config." + thisAddonOptions.longContexts,
         "default" : [
-            "dialogue", "message1", "message2", "message3",
+            "dialogue", "message1", "message2", "message3", "description",
             "message", "noPicture", "scrollingMessage"
         ].join(",")
     },
