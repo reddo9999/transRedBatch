@@ -33,7 +33,7 @@ thisAddon.optionsForm = {
     [thisAddonOptions.alwaysMerge] : {
         "type": "boolean",
         "title": "Always Merge",
-        "description": `Applies the processing of merging with the next line on every wrappable context (the ones below). For those who like compact text.`,
+        "description": `Applies the processing of merging with the next line on every wrappable context, for those who like compact text.`,
         "default" : false,
         "HOOK": "thisAddon.config." + thisAddonOptions.alwaysMerge
       },
