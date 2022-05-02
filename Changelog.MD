@@ -1,9 +1,14 @@
-# Version 0.15
+# Version 0.16
 + Prevent infinite loops by sacricifing padding in case it is too long
 + Add configurable options
 + Add option to try and reduce line amount in critical contexts / e.g. descriptions
     + This is because descriptions can't span into the next window if they don't fit, so we only have 4 or so lines depending on the game. If this saves us a single line that can mean the difference between the text rendering out of bounds or in.
 + God protect us from Comments
++ Fix: Breaking descriptions now works
++ New Option: Allow merging sentences regardless of it being part of the contexts.
+    + Because this merges sentence tails with next sentences, it might result in nicer looking text in general.
++ Faster searching through contexts
++ Merging sentences now works as desired - can target specific contexts and they will have the size that they should have normally, too.
 
 # Version 0.13
 + Recovers padding after wrapping text.
