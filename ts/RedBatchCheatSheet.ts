@@ -8,8 +8,8 @@ const removableContexts = [
 ];
 
 const translatableNoteRegExp = /(<SG)|(<SAC.+?:)/gim;
-const translatablePluginRegExp = /^(?:DW_(?!SET))|(?:D_TEXT )|(?:addLog )|(?:DW_)|(?:ShowInfo )/gim;
-const translatableCommentRegExp = /^NEVERNEVER$/g;
+const translatablePluginRegExp = /^(?:DW_(?!SET))|(?:D_TEXT )|(?:addLog )|(?:DW_)|(?:ShowInfo )|(^text_indicator :)/gim;
+const translatableCommentRegExp = /^text_indicator :/g;
 const translatablePluginJSRegExp = /[^\x21-\x7E\* ]+/g;
 const translatableControlVariable = /.*/g;
 const translatableVxAceScript = ["Vocab", "装備拡張", "Custom Menu Base"];
