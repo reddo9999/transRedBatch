@@ -1,3 +1,9 @@
+# Version 0.14
++ Prevent infinite loops by sacricifing padding in case it is too long
++ Add configurable options
++ Add option to try and reduce line amount in critical contexts / e.g. descriptions
+    + This is because descriptions can't span into the next window if they don't fit, so we only have 4 or so lines depending on the game. If this saves us a single line that can mean the difference between the text rendering out of bounds or in.
+
 # Version 0.13
 + Recovers padding after wrapping text.
 + No longer using default Word Wrap implementation.
