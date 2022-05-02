@@ -184,7 +184,7 @@ function wrapTo (text : string, length: number, mergeWithNext : boolean) {
         
         if (currentSize > length) {
             let closestSpace = lines[i].lastIndexOf(" ", charAt);
-            if (closestSpace == -1) {
+            if (closestSpace <= originalPad.length) {
                 // Just one bigassword? Fine, suit yourself.
                 closestSpace = charAt;
             }
@@ -227,47 +227,32 @@ $(document).ready(() => {
 
     let wrapButton = new RedButtonManagerButton("wrapProject", "icon-commenting", "Wrap Project", () => {
         updateValues();
-        let mergeable = cleanContexts(thisAddon.config[thisAddonOptions.mergeContexts]);
-        let wrappableLong = cleanContexts(thisAddon.config[thisAddonOptions.longContexts]);
-        let wrappableShort = cleanContexts(thisAddon.config[thisAddonOptions.shortContexts]);
+        let mergeable = new RegExp(`(${thisAddon.config[thisAddonOptions.mergeContexts].split(",").join(")|(")})`);
+        let wrappableLong = new RegExp(`(${thisAddon.config[thisAddonOptions.longContexts].split(",").join(")|(")})`);
+        let wrappableShort = new RegExp(`(${thisAddon.config[thisAddonOptions.shortContexts].split(",").join(")|(")})`);
 
         let files = <string[]> trans.getAllFiles();
         for (let i = 0; i < files.length; i++) {
             let file = files[i];
+            console.log("Wrapping " + file + " - Progress: " + (i + 1) + "/" + files.length);
             let data = trans.project.files[file].data;
             let contexts = trans.project.files[file].context;
             for (let k = 0; k < data.length; k++) {
                 let row = data[k];
                 let context = contexts[k];
-                if (context == undefined || row == undefined || context.length == 0) continue;
-                context = context[0].toLowerCase(); // It's safe to assume it's the same everywhere
-                for (let z = 0; z < mergeable.length; z++) {
-                    if (context.indexOf(mergeable[z]) != -1) {
-                        trans.project.files[file].data[k][2] = wrapTo(row[1], wordWrapNoPicture, true);
-                        break;
-                    }
-                }
-                let wrapped = false;
-                for (let z = 0; z < wrappableShort.length; z++) {
-                    if (context.indexOf(wrappableShort[z]) != -1) {
-                        trans.project.files[file].data[k][2] = wrapTo(row[1], wordWrapPicture, false);
-                        wrapped = true;
-                        break;
-                    }
-                }
-                if (!wrapped) {
-                    for (let z = 0; z < wrappableLong.length; z++) {
-                        if (context.indexOf(wrappableLong[z]) != -1) {
-                            trans.project.files[file].data[k][2] = wrapTo(row[1], wordWrapNoPicture, false);
-                            wrapped = true;
-                            break;
-                        }
-                    }
+                // Skip empty / untranslated lines
+                if (context == undefined || row == undefined || context.length == 0 || row[1] == undefined || row[1] == "") continue;
+                let contextString : string = context.join().toLowerCase();
+                let shouldMerge = contextString.match(mergeable) != null;
+                if (contextString.match(wrappableLong) != null) {
+                    trans.project.files[file].data[k][2] = wrapTo(row[1], wordWrapNoPicture, shouldMerge);
+                } else if (contextString.match(wrappableShort) != null) {
+                    trans.project.files[file].data[k][2] = wrapTo(row[1], wordWrapPicture, shouldMerge);
                 }
             }
         }
-
         trans.refreshGrid();
+        trans.evalTranslationProgress();
 	});
 
     let $buttonContainer = $(buttonContainer);
