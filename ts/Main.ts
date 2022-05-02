@@ -4,6 +4,7 @@
 var thisAddon = <any> this;
 
 enum thisAddonOptions {
+    alwaysMerge = "alwaysMerge",
     fontFamily = "fontFamily",
     longContexts = "longContexts",
     shortContexts = "shortContexts",
@@ -23,12 +24,19 @@ thisAddon.optionsForm = {
     [thisAddonOptions.mergeContexts] : {
         "type": "string",
         "title": "Merge Wrap Contexts",
-        "description": "These contexts will be joined into a single line -before- being wrapped to the long length, because they don't get a second window if they don't fit.",
+        "description": "Instead of breaking lines into smaller lines, the remainder of one line will be added to the start of the next line (after padding) in these contexts. This should result in less overall lines, which is good when you don't have the benefit of just making a second message.",
         "HOOK": "thisAddon.config." + thisAddonOptions.mergeContexts,
         "default" : [
             "description"
         ].join(",")
     },
+    [thisAddonOptions.alwaysMerge] : {
+        "type": "boolean",
+        "title": "Always Merge",
+        "description": `Applies the processing of merging with the next line on every wrappable context (the ones below). For those who like compact text.`,
+        "default" : false,
+        "HOOK": "thisAddon.config." + thisAddonOptions.alwaysMerge
+      },
     [thisAddonOptions.shortContexts] : {
         "type": "string",
         "title": "Short Contexts",
@@ -147,6 +155,10 @@ function getSize (text : string) {
     return sizes[text];
 }
 
+function isTrue (value : any) {
+    return (value === "1" || value === "true" || value === 1 || value === true);
+}
+
 function wrapTo (text : string, length: number, mergeWithNext : boolean) {
     let lines = text.split(/\r?\n/g);
     let newLines = [];
@@ -178,7 +190,7 @@ function wrapTo (text : string, length: number, mergeWithNext : boolean) {
             }
             newLines.push(lines[i].substring(0, closestSpace));
             if (charAt < lines[i].length) {
-                if (mergeWithNext) {
+                if (mergeWithNext || isTrue(thisAddon.config[thisAddonOptions.alwaysMerge])) {
                     if (lines[i + 1] === undefined) {
                         lines[i + 1] = "";
                     }
@@ -231,7 +243,7 @@ $(document).ready(() => {
                 context = context[0].toLowerCase(); // It's safe to assume it's the same everywhere
                 for (let z = 0; z < mergeable.length; z++) {
                     if (context.indexOf(mergeable[z]) != -1) {
-                        trans.project.files[file].data[k][1] = wrapTo(row[1], wordWrapNoPicture, true);
+                        trans.project.files[file].data[k][2] = wrapTo(row[1], wordWrapNoPicture, true);
                         break;
                     }
                 }
