@@ -1,3 +1,9 @@
+# Version 0.13
++ Recovers padding after wrapping text.
++ No longer using default Word Wrap implementation.
++ New wrap implementation counts character width rather than character count.
+    + It defaults to MV character size at default font. Might need to tinker for other games/engine.
+
 # Version 0.12
 + Fix: Correct default translator
 + Fix: It correctly loads now.
