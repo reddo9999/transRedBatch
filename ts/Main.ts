@@ -260,3 +260,44 @@ $(document).ready(() => {
 	$buttonContainer.prepend(translateButton.getButton());
 	$buttonContainer.prepend(prepareButton.getButton());
 });
+
+
+
+/* //@ts-expect-error
+window.runTest = (testCount : number, minLength : number, maxLength : number) => {
+    //let font = "　０ １ ２ ３ ４ ５ ６ ７ ８ ９ Ａ Ｂ Ｃ Ｄ Ｅ Ｆ Ｇ Ｈ Ｉ Ｊ Ｋ Ｌ Ｍ Ｎ Ｏ Ｐ Ｑ Ｒ Ｓ Ｔ Ｕ Ｖ Ｗ Ｘ Ｙ Ｚ ａ ｂ ｃ ｄ ｅ ｆ ｇ ｈ ｉ ｊ ｋ ｌ ｍ ｎ ｏ ｐ ｑ ｒ ｓ ｔ ｕ ｖ ｗ ｘ ｙ ｚ ， ． ： ； ！ ？ ＂ ＇ ｀ ＾ ～ ￣ ＿ ＆ ＠ ＃ ％ ＋ － ＊ ＝ ＜ ＞ （ ） ［ ］ ｛ ｝ ｟ ｠ ｜ ￤ ／ ＼ ￢ ＄ ￡ ￠ ￦ ￥";
+    let font = " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    let texts = [];
+
+    let results = [];
+    let differences = [];
+    for (let i = 0; i < testCount; i++) {
+        let length = Math.random() * maxLength;
+        if (length < minLength) {
+            length = minLength;
+        }
+        let text = "";
+        for (let k = 0; k < length; k++) {
+            text += font[Math.floor(Math.random() * font.length)];
+        }
+
+        let realSize = getSize(text);
+
+        let fastSize = 0;
+        for (let k = 0; k < text.length; k++) {
+            fastSize += getSize(text[k]);
+        }
+
+        let diff = Math.abs(fastSize - realSize);
+        let diffPerc = Math.round((1000 * diff) / realSize)/10;
+        differences.push(diffPerc);
+
+        results.push(`"${text}" - Real Size: ${realSize} - Fast Cache Size: ${fastSize} - Difference: ${diffPerc}%`);
+    }
+
+    return [results, differences];
+} */
+// Test results: 0.1% difference for basic text
+// Around 0.5% difference for complex text involving mix of full-width and proportional characters
+// Verdict: it's good.
