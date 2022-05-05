@@ -49,7 +49,7 @@ thisAddon.optionsForm = {
       [thisAddonOptions.shortLength] : {
           "type": "number",
           "title": "Short Length",
-          "description": `The length to wrap short contexts to. This length is measured in square, monospace characters, using japanese characters as basis.\nWhat this means is that you are defining how long your sentences can be in amount of japanese characters. This is useful because proportional fonts will change width depending on the characters used, so wrapping to character count isn't very accurate. 24 is the number of japanese characters that fit in default MV message window with picture.`,
+          "description": `The length to wrap short contexts to. This length is measured in square, monospace characters, using japanese characters as basis.\nWhat this means is that you are defining how long your sentences can be in amount of japanese characters. This is useful because proportional fonts will change width depending on the characters used, so wrapping to character count isn't very accurate. 24 is the number of japanese characters that fit in default MV message window with picture.\nCounting assist: ０１２３４５６７８９`,
           "default" : 24,
           "HOOK": "thisAddon.config." + thisAddonOptions.shortLength
         },
@@ -66,7 +66,7 @@ thisAddon.optionsForm = {
     [thisAddonOptions.longLength] : {
         "type": "number",
         "title": "Long Length",
-        "description": `The length to wrap long contexts to. This length is measured in square, monospace characters, using japanese characters as basis.\nWhat this means is that you are defining how long your sentences can be in amount of japanese characters. This is useful because proportional fonts will change width depending on the characters used, so wrapping to character count isn't very accurate. 28 is the number of japanese characters that fit in default MV message window without picture.`,
+        "description": `The length to wrap long contexts to. This length is measured in square, monospace characters, using japanese characters as basis.\nWhat this means is that you are defining how long your sentences can be in amount of japanese characters. This is useful because proportional fonts will change width depending on the characters used, so wrapping to character count isn't very accurate. 28 is the number of japanese characters that fit in default MV message window without picture.\nCounting assist: ０１２３４５６７８９`,
         "default" : 28,
         "HOOK": "thisAddon.config." + thisAddonOptions.longLength
       },
