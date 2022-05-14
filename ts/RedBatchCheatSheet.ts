@@ -9,7 +9,7 @@ const removableContexts = [
 
 const translatableNoteRegExp = /(<SG)|(<SAC.+?:)/gim;
 const translatablePluginRegExp = /^(?:DW_(?!SET))|(?:D_TEXT )|(?:addLog )|(?:DW_)|(?:ShowInfo )|(^text_indicator :)/gim;
-const translatableCommentRegExp = /^text_indicator :/g;
+const translatableCommentRegExp = /^((text_indicator ?:)|(info:))/g;
 const translatablePluginJSRegExp = /[^\x21-\x7E\* ]+/g;
 const translatableControlVariable = /.*/g;
 const translatableVxAceScript = ["Vocab", "装備拡張", "Custom Menu Base"];
@@ -98,9 +98,37 @@ class RedBatchCheatSheet {
             }
         }
 
+        // TODO: Split everything by engine.
+        switch (trans.project.gameEngine) {
+            case "rm2k":
+                this.checkrm2k();
+            break;
+            case "rm2k3":
+                this.checkrm2k();
+            break;
+        }
+
         // Update view
         trans.refreshGrid();
         trans.evalTranslationProgress();
+    }
+
+    public checkrm2k () {
+        // Removables:
+        // \/Event\/\d+$   -  Event name
+
+        // Translatable:
+        // event_commands/14    - 14 = MESSAGE code
+        
+    }
+
+    /**
+     * Searches ALL FILES for a certain context.
+     * On match, returns the address of the matching row.
+     * @param regs RegExp to match against CONTEXT
+     */
+    public matchContext (regs : RegExp[]) {
+
     }
 
     public checkCollection (collection : any, regExp : RegExp) {
